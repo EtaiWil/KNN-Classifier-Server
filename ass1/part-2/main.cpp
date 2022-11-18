@@ -8,7 +8,13 @@
 bool isSameDimension(const std::vector<  double> &v1,const std::vector< double> &v2){
     return v1.size()==v2.size();
 }
-
+int isINt(double result){
+  if (result=(int) result)
+  {
+   return 1;
+  }
+  return 0;  
+}
 
 
 
@@ -44,23 +50,28 @@ double canberra_distance(const std:: vector< double> &v1,const std::vector< doub
   if (!isSameDimension(v1,v2)){
         throw std::invalid_argument("The Dimensions of the vectors are not the same");
   }
+   double  denominator=0;
   double mona= manhattanDistance(v1,v2);
-
+  for(int i=0;i<v1.size();i++){
+denominator+=abs(v1[i])+abs(v2[i]);
 }
-
-
-
-
-
-
-
-
-int isINt(double result){
-  if (result=(int) result)
-  {
-   return 1;
+double result =mona/denominator;
+return result;
+}
+//chebyshevDistance algorithm number 3 
+double chebyshevDistance(const std:: vector< double> &v1,const std::vector< double> &v2)
+{
+   if (!isSameDimension(v1,v2)){
+        throw std::invalid_argument("The Dimensions of the vectors are not the same");
   }
-  return 0;  
+double max=0;
+ for(int i=0;i<v1.size();i++){
+if ( abs(v1[i]-v2[i])>max)
+{
+  max=abs(v1[i]-v2[i]);
+}
+}
+return max;
 }
 // find eculidean distance (algorithm number 1)
 double euclideanDistance(const std:: vector< double> &v1,const std::vector< double> &v2){
