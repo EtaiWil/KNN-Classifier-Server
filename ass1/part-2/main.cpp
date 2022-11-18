@@ -4,11 +4,16 @@
 #include <vector>
 #include <cmath>
 #include <exception>
-
+// check if the vectors have the same dimenstion
 bool isSameDimension(const std::vector<  double> &v1,const std::vector< double> &v2){
     return v1.size()==v2.size();
 }
 
+
+
+
+
+//find minkowskiDistance (algorithm number 5 )
 double minkowskiDistance(const std:: vector< double> &v1,const std::vector< double> &v2,int p){
 if (!isSameDimension(v1,v2)){
         throw std::invalid_argument("The Dimensions of the vectors are not the same");
@@ -21,9 +26,47 @@ distance+=pow(abs(v1[i]-v2[i]),p);
 distance=pow(distance,power);
 return distance;
 }
+
+
+// manhattanDistance algorithm number 2
+// i removed the p argument because we don't need him i think
+double manhattanDistance(const std:: vector< double> &v1,const std::vector< double> &v2){
+
+  if (!isSameDimension(v1,v2)){
+        throw std::invalid_argument("The Dimensions of the vectors are not the same");
+  }
+  return minkowskiDistance(v1,v2,1);
+}
+
+// canberra_distance algotithm nubmer 4
+// i removed the p argument because we don't need him i think.
+double canberra_distance(const std:: vector< double> &v1,const std::vector< double> &v2){
+  if (!isSameDimension(v1,v2)){
+        throw std::invalid_argument("The Dimensions of the vectors are not the same");
+  }
+  double mona= manhattanDistance(v1,v2);
+
+}
+
+
+
+
+
+
+
+
+int isINt(double result){
+  if (result=(int) result)
+  {
+   return 1;
+  }
+  return 0;  
+}
+// find eculidean distance (algorithm number 1)
 double euclideanDistance(const std:: vector< double> &v1,const std::vector< double> &v2){
 return minkowskiDistance(v1,v2,2);
 }
+
 
 int main(){
 char delim[] = " ";
