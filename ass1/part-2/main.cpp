@@ -4,18 +4,25 @@
 #include <vector>
 #include <cmath>
 #include <exception>
+#define P_MINKOWSKI 2
 // check if the vectors have the same dimenstion
 bool isSameDimension(const std::vector<double> &v1, const std::vector<double> &v2)
 {
   return v1.size() == v2.size();
 }
-int isINt(double result)
+int isInt(double result)
 {
-  if (result = (int)result)
+  if (result == (int)result)
   {
     return 1;
   }
   return 0;
+}
+std::string addPointZero(double x){
+  if(isInt(x)){
+    return ".0";
+  }
+  return "";
 }
 
 // find minkowskiDistance (algorithm number 5 )
@@ -55,14 +62,16 @@ double canberra_distance(const std::vector<double> &v1, const std::vector<double
   {
     throw std::invalid_argument("The Dimensions of the vectors are not the same");
   }
-  double denominator = 0;
-  double mona = manhattanDistance(v1, v2);
-  for (int i = 0; i < v1.size(); i++)
-  {
-    denominator += abs(v1[i]) + abs(v2[i]);
+  double sum = 0;
+  for(int i=0;i<v1.size();i++) {
+    if(v1[i]==0.0 && v2[i]==0.0){
+      continue;
+    }
+    double mona = abs(v2[i]-v1[i]);
+    double denominator=abs(v2[i])+abs(v1[i]);
+    sum += (mona/denominator);
   }
-  double result = mona / denominator;
-  return result;
+  return sum;
 }
 // chebyshevDistance algorithm number 3
 double chebyshevDistance(const std::vector<double> &v1, const std::vector<double> &v2)
@@ -111,10 +120,15 @@ int main()
   {
     vec2.push_back(std::stod(token2));
   }
-  std::cout << euclideanDistance(vec1, vec2)<< std::endl;
-  std::cout << manhattanDistance(vec1, vec2)<< std::endl;
-  std::cout << chebyshevDistance(vec1, vec2)<< std::endl;
-  std::cout << canberra_distance(vec1, vec2)<< std::endl;
-  std::cout << minkowskiDistance(vec1, vec2, 2) << std::endl;
+  double euclidian = euclideanDistance(vec1, vec2);
+  double manhattan = manhattanDistance(vec1, vec2);
+  double chebyshev = chebyshevDistance(vec1, vec2);
+  double canberra = canberra_distance(vec1, vec2);
+  double minkowski = minkowskiDistance(vec1, vec2, P_MINKOWSKI);
+  std::cout << euclidian<<addPointZero(euclidian)<< std::endl;
+  std::cout << manhattan<<addPointZero(manhattan)<< std::endl;
+  std::cout << chebyshev<<addPointZero(chebyshev)<< std::endl;
+  std::cout << canberra<<addPointZero(canberra)<< std::endl;
+  std::cout << minkowski<<addPointZero(minkowski)<< std::endl;
   return 0;
 }
