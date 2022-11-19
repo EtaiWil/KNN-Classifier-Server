@@ -1,29 +1,44 @@
 #include "Distance.h"
-#define P_MINKOWSKI 2
-int main()
-{
-  char delim[] = " ";
-  // converting from string to double
-  std::string input1;
-  std::cout << "Please, enter first vector: ";
-  std::getline(std::cin, input1);
-  std::vector<double> vec1;
+bool isValidDouble(std::string s){
+  if(s.length() == 0) {
+    return false;
+  }
+   std::size_t found = s.find_first_not_of("0123456789.-");
+  if (found!=std::string::npos)
+  {
+    return false;
+  }
+  if(s[0] == '.'){
+    return false;
+  }
+  return true;
+
+}
+std::vector<double> getUserInput(){
+  std::string input;
+  std::getline(std::cin, input);
+  std::vector<double> vec;
   std::string token;
-  std::istringstream iss(input1);
+  std::istringstream iss(input);
   while (std::getline(iss, token, ' '))
   {
-    vec1.push_back(std::stod(token));
+    if(!isValidDouble(token)){
+      throw std::invalid_argument("Invalid arguments for the Vector");
+    }
+    vec.push_back(std::stod(token));
   }
-
-  std::string input2;
-  std::cout << "Please, enter second vector: ";
-  std::getline(std::cin, input2);
+  return vec;
+}
+int main()
+{
+  std::vector<double> vec1;
   std::vector<double> vec2;
-  std::string token2;
-  std::istringstream iss2(input2);
-  while (std::getline(iss2, token2, ' '))
-  {
-    vec2.push_back(std::stod(token2));
+  try{
+  vec1 = getUserInput();
+  vec2 = getUserInput();
+  }catch(std::exception e){
+    std::cout<<"Invalid arguments for the Vector"<<std::endl;
+    return 1;
   }
   double euclidian =  Distance::euclideanDistance(vec1, vec2);
   double manhattan = Distance::manhattanDistance(vec1, vec2);

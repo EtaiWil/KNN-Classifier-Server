@@ -46,9 +46,9 @@ double Distance::chebyshevDistance(const std::vector<double> &v1, const std::vec
   double max = 0;
   for (int i = 0; i < v1.size(); i++)
   {
-    if (abs(v1[i] - v2[i]) > max)
+    if (fabs(v1[i] - v2[i]) > max)
     {
-      max = abs(v1[i] - v2[i]);
+      max = fabs(v1[i] - v2[i]);
     }
   }
   return max;
@@ -63,16 +63,17 @@ double Distance::canberra_distance(const std::vector<double> &v1, const std::vec
   }
   double sum = 0;
   for(int i=0;i<v1.size();i++) {
-    if(v1[i]==0.0 && v2[i]==0.0){
+    double mona = fabs(v2[i]-v1[i]);
+    double denominator=fabs(v2[i])+fabs(v1[i]);
+    if(denominator==0){
       continue;
     }
-    double mona = abs(v2[i]-v1[i]);
-    double denominator=abs(v2[i])+abs(v1[i]);
+    
     sum += (mona/denominator);
+
   }
   return sum;
 }
-
 
 // find minkowskiDistance (algorithm number 5 )
 double Distance::minkowskiDistance(const std::vector<double> &v1, const std::vector<double> &v2, int p)
@@ -84,7 +85,7 @@ double Distance::minkowskiDistance(const std::vector<double> &v1, const std::vec
   double distance = 0;
   for (int i = 0; i < v1.size(); i++)
   {
-    distance += pow(abs(v1[i] - v2[i]), p);
+    distance += pow(fabs(v1[i] - v2[i]), p);
   }
   double power = (1 / (double)p);
   distance = pow(distance, power);

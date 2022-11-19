@@ -5,7 +5,7 @@
 #include <sstream>
 #include <vector>
 #include <cmath>
-#include <exception>
+#include <stdexcept>
 #define P_MINKOWSKI 2
 class Distance {
 private:
