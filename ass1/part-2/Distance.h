@@ -6,7 +6,9 @@
 #include <vector>
 #include <cmath>
 #include <stdexcept>
+// the defined p in minkowsi formula
 #define P_MINKOWSKI 2
+//declaring all the functions we want to use to calculate distance
 class Distance {
 private:
 static bool isSameDimension(const std::vector<double> &v1, const std::vector<double> &v2);
