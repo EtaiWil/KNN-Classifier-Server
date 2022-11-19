@@ -1,8 +1,17 @@
 #include "Distance.h"
-#include <regex>
 bool isValidDouble(std::string s){
-  std::regex pattern ("^(-?)(0|([1-9][0-9]*))(\\.[0-9]+)?$");
-  return std::regex_match(s,pattern);
+  if(s.length() == 0) {
+    return false;
+  }
+   std::size_t found = s.find_first_not_of("0123456789.-");
+  if (found!=std::string::npos)
+  {
+    return false;
+  }
+  if(s[0] == '.'){
+    return false;
+  }
+  return true;
 
 }
 std::vector<double> getUserInput(){
@@ -22,8 +31,15 @@ std::vector<double> getUserInput(){
 }
 int main()
 {
-  std::vector<double> vec1 = getUserInput();
-  std::vector<double> vec2 = getUserInput();
+  std::vector<double> vec1;
+  std::vector<double> vec2;
+  try{
+  vec1 = getUserInput();
+  vec2 = getUserInput();
+  }catch(std::exception e){
+    std::cout<<"Invalid arguments for the Vector"<<std::endl;
+    return 1;
+  }
   double euclidian =  Distance::euclideanDistance(vec1, vec2);
   double manhattan = Distance::manhattanDistance(vec1, vec2);
   double chebyshev =Distance:: chebyshevDistance(vec1, vec2);
