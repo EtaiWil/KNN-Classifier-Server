@@ -5,6 +5,7 @@
 {
   return v1.size() == v2.size();
 }
+//check if the result of any algorithm is int.
 int Distance::isInt(double result)
 {
   if (result == (int)result)
@@ -13,6 +14,7 @@ int Distance::isInt(double result)
   }
   return 0;
 }
+//if the result of any algorithm is int type we ant to add .0 to the answer.
 std::string Distance::addPointZero(double x){
   if(Distance::isInt(x)){
     return ".0";
@@ -25,7 +27,7 @@ double Distance::euclideanDistance(const std::vector<double> &v1, const std::vec
   return minkowskiDistance(v1, v2, 2);
 }
 // manhattanDistance algorithm number 2
-
+//using minkowskiDistance function to compute manhhtan distance by defining the p to one.
 double Distance::manhattanDistance(const std::vector<double> &v1, const std::vector<double> &v2)
 {
 
@@ -37,6 +39,7 @@ double Distance::manhattanDistance(const std::vector<double> &v1, const std::vec
 }
 
 // chebyshevDistance algorithm number 3
+// calculating the chebyshev distance by the formula.
 double Distance::chebyshevDistance(const std::vector<double> &v1, const std::vector<double> &v2)
 {
   if (!isSameDimension(v1, v2))
@@ -55,6 +58,7 @@ double Distance::chebyshevDistance(const std::vector<double> &v1, const std::vec
 }
 
 // canberra_distance algotithm nubmer 4
+// calculating the canberra distance by the formula.
 double Distance::canberra_distance(const std::vector<double> &v1, const std::vector<double> &v2)
 {
   if (!isSameDimension(v1, v2))
@@ -76,6 +80,7 @@ double Distance::canberra_distance(const std::vector<double> &v1, const std::vec
 }
 
 // find minkowskiDistance (algorithm number 5 )
+// calculating the minkowski Distance by the formula.
 double Distance::minkowskiDistance(const std::vector<double> &v1, const std::vector<double> &v2, int p)
 {
   if (!isSameDimension(v1, v2))
