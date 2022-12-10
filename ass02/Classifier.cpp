@@ -1,13 +1,13 @@
 #include "Classifier.h"
-Classifier::Classifier(int k) {
-    this->k=k;
+Classifier::Classifier(int k):k(k),classifiedVectors(list<tuple<vector<double>,string>>()),calc(KnnCalcAuc(k,classifiedVectors)) {
+   /* this->k=k;
     this->classifiedVectors = list<tuple<vector<double>,string>>();// create a list of vectors
+    this->calc=KnnCalcAuc(k,classifiedVectors);
 //this->caluclator=(CaluclatorKnn&)nullptr;
-
+*/
 };
 void  Classifier::getClassifiedVectors(istream& is)
 {
-
     string s;
     while(getline(is,s)) {
         //getting all the line fromn the user.
@@ -37,6 +37,9 @@ void  Classifier::getClassifiedVectors(istream& is)
 
 Classifier::~Classifier(){
 
+}
+string Classifier::Classify(const vector<double> &Vector){
+    return this->calc.Classify(Vector);
 }
 // this function check if the input from the user is valid.
 bool Classifier::isValidDouble(string s){
