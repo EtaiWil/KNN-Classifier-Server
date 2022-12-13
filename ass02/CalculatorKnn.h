@@ -13,7 +13,7 @@ using namespace std;
 //declaring all the functions we want to use to calculate distance
 class CalculatorKnn{
 private:
-int k; //the k in the knn 
+int k; //the k in the knn
 list<tuple<vector<double>,string>>& classifiedVectors;
 virtual double calculateDistance(const vector <double> &firstVector,const vector <double> &secondVector) const=0; //abstact method
 static bool comperator(tuple<string,double> v1,tuple<string,double> v2);

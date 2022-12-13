@@ -14,7 +14,7 @@ class  Classifier
 {
 private:
     int k;
-    list<tuple<vector<double>,string>> classifiedVectors;
+    list<tuple<vector<double>,string>>& classifiedVectors;
     const CalculatorKnn& calc;
     bool isValidDouble(string s);
 

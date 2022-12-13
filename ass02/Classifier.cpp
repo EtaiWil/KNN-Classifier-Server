@@ -1,11 +1,11 @@
 #include "Classifier.h"
-Classifier::Classifier(int k):k(k),classifiedVectors(list<tuple<vector<double>,string>>()),calc(KnnCalcAuc(k,classifiedVectors)) {
+Classifier::Classifier(int k):k(k),classifiedVectors(*(new list<tuple<vector<double>,string>>)),calc(*(new KnnCalcAuc(k,classifiedVectors))){}//,classifiedVectors(list<tuple<vector<double>,string>>()) {
+   // this->calc=KnnCalcAuc(k,classifiedVectors);
    /* this->k=k;
     this->classifiedVectors = list<tuple<vector<double>,string>>();// create a list of vectors
     this->calc=KnnCalcAuc(k,classifiedVectors);
 //this->caluclator=(CaluclatorKnn&)nullptr;
 */
-};
 void  Classifier::getClassifiedVectors(istream& is)
 {
     string s;
@@ -36,7 +36,7 @@ void  Classifier::getClassifiedVectors(istream& is)
 }
 
 Classifier::~Classifier(){
-
+// add a destructor.
 }
 string Classifier::Classify(const vector<double> &Vector){
     return this->calc.Classify(Vector);
