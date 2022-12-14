@@ -5,7 +5,8 @@ We did this by creating an abstract `CalculatorKnn` class which implemented the 
 By doing so, each class that inherits from `CalculatorKnn`needs to implement this method. in each of the inheriting classes we have implemented this method with the `Distance` class we wrote in the last assignment.
 
 We also created a classifier class that gets a K for the number of KNN and a string repressenting the Distance we want to calculate, the classifier creates a list of vectors and their classification in a tuple from the file given as an argument.
-
+The classifier also creates a calculator of the requested type with the given K and the list of vectors that we read from the given file.
+By creating the calculator inside the Classifier we have done **composition**.
 Eventually after reading all the classified vectors, the program gets a vector from the user to classify, and it classifies it with the `classify` method that gets the vector and returns a string - the classification of the vector.
 
 **Compile by `> make` and run by `> a.out k file distance` with k being the K for KNN, file being the path to the Classfied vectors file,and distance being a distance to use**
