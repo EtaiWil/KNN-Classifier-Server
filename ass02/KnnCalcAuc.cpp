@@ -1,4 +1,5 @@
 #include "KnnCalcAuc.h"
+//implement the virtual method. return the right distance.
 double KnnCalcAuc::calculateDistance(const vector<double> &firstVector,const vector<double> &secondVector) const{
     return Distance::euclideanDistance(firstVector,secondVector);
 }

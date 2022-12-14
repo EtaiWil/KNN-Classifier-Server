@@ -1,6 +1,7 @@
 #include "Classifier.h"
-Classifier::Classifier(int k):k(k),classifiedVectors(*(new list<tuple<vector<double>,string>>)),calc(*(new KnnCalcAuc(k,classifiedVectors))){}
-
+//constactor. create new list and a new object to caluclate the knn algorithm. using abstraction.
+Classifier::Classifier(int k):k(k),classifiedVectors(*(new list<tuple<vector<double>,string>>)),calc(getCalc(distance)){}
+//insert every element to the list from the file 
 void  Classifier::getClassifiedVectors(istream& is)
 {
     string s;
@@ -26,9 +27,10 @@ void  Classifier::getClassifiedVectors(istream& is)
         }
         get<1>(classifiedItem) = tokens[tokens.size() - 1];
         this->classifiedVectors.push_back(classifiedItem);
-     //   cout<<"("<<get<0>(classifiedItem)[0]<<","<<get<1>(classifiedItem)<<")"<<endl;
+     
     }
 }
+//distractor
 Classifier::~Classifier(){
 reset();
 }
@@ -46,7 +48,7 @@ Classifier& Classifier::operator= (const Classifier& other){
 	*this = Classifier(other);
 	return *this;
 }
-
+//move assignment operator
 Classifier&  Classifier::operator= (Classifier&& other) noexcept{
 	if (this == &other) {
 		return *this;
@@ -58,7 +60,7 @@ Classifier&  Classifier::operator= (Classifier&& other) noexcept{
 }
 
 
-
+//get the type of the vector we want to clasify
 string Classifier::Classify(const vector<double> &Vector){
     return this->calc.Classify(Vector);
 }
@@ -75,11 +77,13 @@ bool Classifier::isValidDouble(string s){
     }
     return true;
 }
+//clean everything we do in the heap.
 void Classifier::reset() noexcept
 {
     delete(&calc);
 	delete(&classifiedVectors);
 }
+//this function calcualte the distance based on input from the user
 CalculatorKnn& Classifier::getCalc(string distanceType){
 if(distanceType=="AUC"){
     return *(new KnnCalcAuc(this->k,this->classifiedVectors));

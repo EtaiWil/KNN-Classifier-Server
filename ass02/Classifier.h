@@ -21,13 +21,15 @@ class  Classifier
 private:
     int k;
     list<tuple<vector<double>,string>>& classifiedVectors;
+    //using comopsition
     const CalculatorKnn& calc;
     bool isValidDouble(string s);
+    //used to delete what we allocate on the heap
     void reset() noexcept;
+    //return Knn calcuator by given input .
     CalculatorKnn& getCalc(string distanceType);
-
 public:
-    Classifier(int k);
+    Classifier(int k, string distance);
     Classifier (const Classifier& other); //copy constructor
     Classifier& operator= (const Classifier& other); //copy assignment operator
     Classifier (Classifier&& other) noexcept=default; //move constructor

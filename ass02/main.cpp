@@ -48,6 +48,7 @@ return -1;
 }
 int k;
 try{
+  //check if its number
  k = atoi(argv[1]);
 }
 catch(exception e){
@@ -64,11 +65,13 @@ catch(exception e){
     catch(exception e){
         cout<<"problem opening file"<<endl;
     }
+    //get the data from the file 
     cl.getClassifiedVectors(infile);
     infile.close();
     while(true){
     std::vector<double> vec1;
     vec1=getUserInput();
+    //get the answer in s
     string s=cl.Classify(vec1);
     std::cout<<s<<std::endl;
     }

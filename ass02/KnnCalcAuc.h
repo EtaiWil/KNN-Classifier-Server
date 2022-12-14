@@ -9,8 +9,10 @@
 
 class KnnCalcAuc : public CalculatorKnn {
     private:
+    //implemets the virtual method to calculate distance 
     virtual double calculateDistance(const vector<double>& firstVector,const vector<double>& secondVector) const;
     public:
+    //constructor
     KnnCalcAuc(int k,list<tuple<vector<double>,string>>& classifiedVectors);
     KnnCalcAuc (const KnnCalcAuc& other); //copy constructor
     KnnCalcAuc& operator= (const KnnCalcAuc& other); //copy assignment operator

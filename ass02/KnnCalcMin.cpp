@@ -1,4 +1,5 @@
 #include "KnnCalcMin.h"
+//implements the virtual method to calc the minkowskiDistance between 2 vectors. 
 double KnnCalcMin::calculateDistance(const vector<double> &firstVector,const vector<double> &secondVector) const{
     return Distance::minkowskiDistance(firstVector,secondVector,P);
 }

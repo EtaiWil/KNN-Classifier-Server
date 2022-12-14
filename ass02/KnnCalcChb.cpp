@@ -1,4 +1,5 @@
 #include "KnnCalcChb.h"
+//return the right distance by chebyshev. implemets the virtual method.
 double KnnCalcChb::calculateDistance(const vector<double> &firstVector,const vector<double> &secondVector) const{
     return Distance::chebyshevDistance(firstVector,secondVector);
 }

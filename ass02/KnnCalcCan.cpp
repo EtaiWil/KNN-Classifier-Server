@@ -1,4 +1,5 @@
 #include "KnnCalcCan.h"
+//return the right distnace by canberra.
 double KnnCalcCan::calculateDistance(const vector<double> &firstVector,const vector<double> &secondVector) const{
     return Distance::canberra_distance(firstVector,secondVector);
 }
