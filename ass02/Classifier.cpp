@@ -1,11 +1,6 @@
 #include "Classifier.h"
-Classifier::Classifier(int k):k(k),classifiedVectors(*(new list<tuple<vector<double>,string>>)),calc(*(new KnnCalcAuc(k,classifiedVectors))){}//,classifiedVectors(list<tuple<vector<double>,string>>()) {
-   // this->calc=KnnCalcAuc(k,classifiedVectors);
-   /* this->k=k;
-    this->classifiedVectors = list<tuple<vector<double>,string>>();// create a list of vectors
-    this->calc=KnnCalcAuc(k,classifiedVectors);
-//this->caluclator=(CaluclatorKnn&)nullptr;
-*/
+Classifier::Classifier(int k):k(k),classifiedVectors(*(new list<tuple<vector<double>,string>>)),calc(*(new KnnCalcAuc(k,classifiedVectors))){}
+
 void  Classifier::getClassifiedVectors(istream& is)
 {
     string s;
@@ -31,26 +26,38 @@ void  Classifier::getClassifiedVectors(istream& is)
         }
         get<1>(classifiedItem) = tokens[tokens.size() - 1];
         this->classifiedVectors.push_back(classifiedItem);
-        cout<<"("<<get<0>(classifiedItem)[0]<<","<<get<1>(classifiedItem)<<")"<<endl;
+     //   cout<<"("<<get<0>(classifiedItem)[0]<<","<<get<1>(classifiedItem)<<")"<<endl;
     }
 }
 Classifier::~Classifier(){
-// add a destructor.
+reset();
 }
-/*
+
 //copy constructor 
-  Classifier::Classifier (const Classifier& other):k(k),classifiedVectors(other.classifiedVectors),calc(other->calc){
+  Classifier::Classifier (const Classifier& other):k(k),classifiedVectors(other.classifiedVectors),calc(other.calc){
    }
 //copy assignment operator
-Classifier &operator= (const Classifier& other){
-    delete(this);
-    return Classifier::classifier(other);
+Classifier& Classifier::operator= (const Classifier& other){
+    if (this == &other) {
+		return *this;
+	}
+	reset();
+	// Use the copy constructor and move assignment operator
+	*this = Classifier(other);
+	return *this;
 }
-//move assignment constructor
-Classifier::Classifier (Classifier&& other){
 
+Classifier&  Classifier::operator= (Classifier&& other) noexcept{
+	if (this == &other) {
+		return *this;
+	}
+
+	reset();
+    *this=Classifier(other);
+	return *this;
 }
-*/
+
+
 
 string Classifier::Classify(const vector<double> &Vector){
     return this->calc.Classify(Vector);
@@ -61,14 +68,36 @@ bool Classifier::isValidDouble(string s){
         return false;
     }
     // we want to get from the user only this characters "0123456789.-" as they represent Double number.
-    std::size_t found = s.find_first_not_of("0123456789.-");
+    std::size_t found = s.find_first_not_of("0123456789.-Ee");
     if (found!=std::string::npos)
     {
         return false;
     }
-    if(s[0] == '.'){
-        return false;
-    }
     return true;
-
+}
+void Classifier::reset() noexcept
+{
+    delete(&calc);
+	delete(&classifiedVectors);
+}
+CalculatorKnn& Classifier::getCalc(string distanceType){
+if(distanceType=="AUC"){
+    return *(new KnnCalcAuc(this->k,this->classifiedVectors));
+}
+else if(distanceType=="MAN"){
+return *(new KnnCalcAuc(this->k,this->classifiedVectors));
+}
+else if(distanceType=="CHB"){
+return *(new KnnCalcChb(this->k,this->classifiedVectors));
+}
+else if(distanceType=="CAN"){
+return *(new KnnCalcCan(this->k,this->classifiedVectors));
+}
+else if(distanceType=="MIN"){
+return *(new KnnCalcMin(this->k,this->classifiedVectors));
+}
+else{
+    std::cout<<"not a valid distance name - Auclidian Calculator instead"<<std::endl;
+    return *(new KnnCalcAuc(this->k,this->classifiedVectors));
+}
 }
