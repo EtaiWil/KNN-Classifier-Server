@@ -1,6 +1,6 @@
 #include "Classifier.h"
 //constactor. create new list and a new object to caluclate the knn algorithm. using abstraction.
-Classifier::Classifier(int k):k(k),classifiedVectors(*(new list<tuple<vector<double>,string>>)),calc(getCalc(distance)){}
+Classifier::Classifier(int k,string distance):k(k),classifiedVectors(*(new list<tuple<vector<double>,string>>)),calc(getCalc(distance)){}
 //insert every element to the list from the file 
 void  Classifier::getClassifiedVectors(istream& is)
 {
