@@ -1,0 +1,21 @@
+#ifndef KNNCALCMAN_H_
+#define KNNCALCMAN_H_
+
+#include "Distance.h"
+#include "CalculatorKnn.h"
+#include <list>
+#include <tuple>
+#include <vector>
+
+class KnnCalcMan : public CalculatorKnn {
+    private:
+    virtual double calculateDistance(const vector<double>& firstVector,const vector<double>& secondVector) const;
+    public:
+    KnnCalcMan(int k,list<tuple<vector<double>,string>>& classifiedVectors);
+    KnnCalcMan (const KnnCalcMan& other); //copy constructor
+    KnnCalcMan& operator= (const KnnCalcMan& other); //copy assignment operator
+    KnnCalcMan (KnnCalcMan&& other) noexcept=default; //move constructor
+    KnnCalcMan& operator= (KnnCalcMan&& other) noexcept; //move assignment operator
+    ~KnnCalcMan()=default; //destructor
+};
+#endif
