@@ -8,6 +8,7 @@
 #include <list>
 #include <tuple>
 #include <iostream>
+#include <map>
 
 using namespace std;
 //declaring all the functions we want to use to calculate distance

@@ -34,10 +34,24 @@ void  Classifier::getClassifiedVectors(istream& is)
         cout<<"("<<get<0>(classifiedItem)[0]<<","<<get<1>(classifiedItem)<<")"<<endl;
     }
 }
-
 Classifier::~Classifier(){
 // add a destructor.
 }
+/*
+//copy constructor 
+  Classifier::Classifier (const Classifier& other):k(k),classifiedVectors(other.classifiedVectors),calc(other->calc){
+   }
+//copy assignment operator
+Classifier &operator= (const Classifier& other){
+    delete(this);
+    return Classifier::classifier(other);
+}
+//move assignment constructor
+Classifier::Classifier (Classifier&& other){
+
+}
+*/
+
 string Classifier::Classify(const vector<double> &Vector){
     return this->calc.Classify(Vector);
 }

@@ -20,6 +20,9 @@ private:
 
 public:
     Classifier(int k);
+    //Classifier (const Classifier& other); //copy constructor
+    //Classifier &operator= (const Classifier& other); //copy assignment operator
+    //Classifier (Classifier&& other) noexcept;
     void getClassifiedVectors(istream& is);
     string Classify(const vector<double> &Vector);
     ~Classifier();
