@@ -57,7 +57,7 @@ catch(exception e){
 }
     string file_path=argv[2];
     string distance_type=argv[3];
-    Classifier cl = Classifier(k);
+    Classifier cl = Classifier(k,distance_type);
     ifstream infile;
     try{
     infile.open(file_path);
