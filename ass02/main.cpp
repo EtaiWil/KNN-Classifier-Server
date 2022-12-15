@@ -2,6 +2,7 @@
 #include <fstream>
 #include <iostream>
 #include <vector>
+#include <stdexcept>
 
 // this function check if the input from the user is valid. 
 bool isValidDouble(std::string s){
@@ -70,10 +71,18 @@ catch(exception e){
     infile.close();
     while(true){
     std::vector<double> vec1;
+    try{
     vec1=getUserInput();
+    } catch(exception e){
+      std::cout<<"Invalid arguments for the Vector"<<std::endl;
+    }
+    try{
     //get the answer in s
     string s=cl.Classify(vec1);
     std::cout<<s<<std::endl;
+    }catch(exception e) {
+      std::cout<<"Invalid Vector To Classify"<<std::endl;
+    }
     }
     return 0;
 }
