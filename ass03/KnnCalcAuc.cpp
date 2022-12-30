@@ -3,7 +3,7 @@
 double KnnCalcAuc::calculateDistance(const vector<double> &firstVector,const vector<double> &secondVector) const{
     return Distance::euclideanDistance(firstVector,secondVector);
 }
-KnnCalcAuc::KnnCalcAuc(int k,list<tuple<vector<double>,string>>& classifiedVectors):CalculatorKnn(k,classifiedVectors){}
+KnnCalcAuc::KnnCalcAuc(list<tuple<vector<double>,string>>& classifiedVectors):CalculatorKnn(classifiedVectors){}
 
 //copy assignment operator
 KnnCalcAuc& KnnCalcAuc::operator= (const KnnCalcAuc& other){
@@ -15,7 +15,7 @@ KnnCalcAuc& KnnCalcAuc::operator= (const KnnCalcAuc& other){
 	return *this;
 }
 //copy constructor 
- KnnCalcAuc::KnnCalcAuc(const KnnCalcAuc& other): CalculatorKnn(other.k, other.classifiedVectors){
+ KnnCalcAuc::KnnCalcAuc(const KnnCalcAuc& other): CalculatorKnn(other.classifiedVectors){
  }
  //move assignment operator
 KnnCalcAuc& KnnCalcAuc::operator= (KnnCalcAuc&& other) noexcept{

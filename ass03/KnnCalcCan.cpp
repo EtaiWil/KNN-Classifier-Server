@@ -3,7 +3,7 @@
 double KnnCalcCan::calculateDistance(const vector<double> &firstVector,const vector<double> &secondVector) const{
     return Distance::canberra_distance(firstVector,secondVector);
 }
-KnnCalcCan::KnnCalcCan(int k,list<tuple<vector<double>,string>>& classifiedVectors):CalculatorKnn(k,classifiedVectors){}
+KnnCalcCan::KnnCalcCan(list<tuple<vector<double>,string>>& classifiedVectors):CalculatorKnn(classifiedVectors){}
 
 //copy assignment operator
 KnnCalcCan& KnnCalcCan::operator= (const KnnCalcCan& other){
@@ -15,7 +15,7 @@ KnnCalcCan& KnnCalcCan::operator= (const KnnCalcCan& other){
 	return *this;
 }
 //copy constructor 
- KnnCalcCan::KnnCalcCan(const KnnCalcCan& other): CalculatorKnn(other.k, other.classifiedVectors){
+ KnnCalcCan::KnnCalcCan(const KnnCalcCan& other): CalculatorKnn(other.classifiedVectors){
  }
  //move assignment operator
 KnnCalcCan& KnnCalcCan::operator= (KnnCalcCan&& other) noexcept{

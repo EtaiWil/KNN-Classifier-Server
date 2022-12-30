@@ -58,7 +58,7 @@ catch(exception e){
 }
     string file_path=argv[2];
     string distance_type=argv[3];
-    Classifier cl = Classifier(k,distance_type);
+    Classifier cl = Classifier();
     ifstream infile;
     try{
     infile.open(file_path);
@@ -78,7 +78,7 @@ catch(exception e){
     }
     try{
     //get the answer in s
-    string s=cl.Classify(vec1);
+    string s=cl.Classify(vec1,k,distance_type);
     std::cout<<s<<std::endl;
     }catch(exception e) {
       std::cout<<"Invalid Vector To Classify"<<std::endl;

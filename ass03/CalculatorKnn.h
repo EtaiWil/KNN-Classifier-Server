@@ -20,15 +20,14 @@ virtual double calculateDistance(const vector <double> &firstVector,const vector
 //comperator to compare between vectors.
 static bool comperator(tuple<string,double> v1,tuple<string,double> v2);
 protected:
-//the k in the knn
-int k; 
+
 //list that the elemets are tules, every tuple contain vector from type double. and the other size of the tuple is string.
 list<tuple<vector<double>,string>>& classifiedVectors;
 public:
 //constractor
-    CalculatorKnn(int k,list<tuple<vector<double>,string>>& classifiedVectors);
+    CalculatorKnn(list<tuple<vector<double>,string>>& classifiedVectors);
      //calculating what object repeat the most in the k closet elements.
-    string Classify(const vector<double> &Vector) const;\
+    string Classify(const vector<double> &Vector,int k) const;
     //the other are the implemets of rule of 5.
     CalculatorKnn(const CalculatorKnn& other);
 	CalculatorKnn& operator=(const CalculatorKnn& other);

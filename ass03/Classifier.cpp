@@ -1,6 +1,6 @@
 #include "Classifier.h"
 //constactor. create new list and a new object to caluclate the knn algorithm. using abstraction.
-Classifier::Classifier(int k,string distance):k(k),classifiedVectors(*(new list<tuple<vector<double>,string>>)),calc(getCalc(distance)){}
+Classifier::Classifier():classifiedVectors(*(new list<tuple<vector<double>,string>>)),calcs(getCalcs()){}
 //insert every element to the list from the file 
 void  Classifier::getClassifiedVectors(istream& is)
 {
@@ -36,7 +36,7 @@ reset();
 }
 
 //copy constructor 
-  Classifier::Classifier (const Classifier& other):k(k),classifiedVectors(other.classifiedVectors),calc(other.calc){
+  Classifier::Classifier (const Classifier& other):classifiedVectors(other.classifiedVectors),calcs(other.calcs){
    }
 //copy assignment operator
 Classifier& Classifier::operator= (const Classifier& other){
@@ -61,8 +61,10 @@ Classifier&  Classifier::operator= (Classifier&& other) noexcept{
 
 
 //get the type of the vector we want to clasify
-string Classifier::Classify(const vector<double> &Vector){
-    return this->calc.Classify(Vector);
+string Classifier::Classify(const vector<double> &Vector,int k,string distanceType){
+    //test if k is valid
+    //test if distance type is valid
+    return (this->calcs[distanceType])->Classify(Vector,k);
 }
 // this function check if the input from the user is valid.
 bool Classifier::isValidDouble(string s){
@@ -80,28 +82,21 @@ bool Classifier::isValidDouble(string s){
 //clean everything we do in the heap.
 void Classifier::reset() noexcept
 {
-    delete(&calc);
+     map<string, CalculatorKnn*>::iterator it;
+    for (it = calcs.begin(); it != calcs.end(); it++)
+    {
+        delete(it->second);
+    }
+    delete(&calcs);
 	delete(&classifiedVectors);
 }
 //this function calcualte the distance based on input from the user
-CalculatorKnn& Classifier::getCalc(string distanceType){
-if(distanceType=="AUC"){
-    return *(new KnnCalcAuc(this->k,this->classifiedVectors));
-}
-else if(distanceType=="MAN"){
-return *(new KnnCalcAuc(this->k,this->classifiedVectors));
-}
-else if(distanceType=="CHB"){
-return *(new KnnCalcChb(this->k,this->classifiedVectors));
-}
-else if(distanceType=="CAN"){
-return *(new KnnCalcCan(this->k,this->classifiedVectors));
-}
-else if(distanceType=="MIN"){
-return *(new KnnCalcMin(this->k,this->classifiedVectors));
-}
-else{
-    std::cout<<"not a valid distance name - Auclidian Calculator instead"<<std::endl;
-    return *(new KnnCalcAuc(this->k,this->classifiedVectors));
-}
+map<string,CalculatorKnn*>& Classifier::getCalcs(){
+map<string,CalculatorKnn*> &calcs=*(new map<string,CalculatorKnn*>());
+calcs["AUC"]=new KnnCalcAuc(this->classifiedVectors);
+calcs["MAN"]=new KnnCalcMan(this->classifiedVectors);
+calcs["CHB"]=new KnnCalcChb(this->classifiedVectors);
+calcs["CAN"]=new KnnCalcCan(this->classifiedVectors);
+calcs["MIN"]=new KnnCalcMin(this->classifiedVectors);
+return calcs;
 }

@@ -13,7 +13,7 @@ class KnnCalcCan : public CalculatorKnn {
     virtual double calculateDistance(const vector<double>& firstVector,const vector<double>& secondVector) const;
     public:
     //constructor
-    KnnCalcCan(int k,list<tuple<vector<double>,string>>& classifiedVectors);
+    KnnCalcCan(list<tuple<vector<double>,string>>& classifiedVectors);
     KnnCalcCan (const KnnCalcCan& other); //copy constructor
     KnnCalcCan& operator= (const KnnCalcCan& other); //copy assignment operator
     KnnCalcCan (KnnCalcCan&& other) noexcept=default; //move constructor

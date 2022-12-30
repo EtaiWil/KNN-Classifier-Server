@@ -1,8 +1,11 @@
 #include "CalculatorKnn.h"
 // initalize all the vectors in list that every element store at tuple.(constractor). 
-CalculatorKnn::CalculatorKnn(int k,list<tuple<vector<double>,string>>& classifiedVectors):k(k),classifiedVectors(classifiedVectors){ }
+CalculatorKnn::CalculatorKnn(list<tuple<vector<double>,string>>& classifiedVectors):classifiedVectors(classifiedVectors){ }
 // get the type of the desierd vector we want to classify.
-string CalculatorKnn::Classify(const vector<double> &Vector) const{
+string CalculatorKnn::Classify(const vector<double> &Vector,int k) const{
+   if(this->classifiedVectors.size()<k){
+      k=this->classifiedVectors.size();
+   }
     vector<tuple<string,double>> distances;
     for(auto& cVector:this->classifiedVectors) {
        distances.push_back(make_tuple(get<1>(cVector),calculateDistance(Vector,get<0>(cVector))));
@@ -14,7 +17,7 @@ string CalculatorKnn::Classify(const vector<double> &Vector) const{
    int max=0;
    string type="";
    //calculating what object repeat the most in the k closet elements.
-   for(int i=0;i<this->k;i++){
+   for(int i=0;i<k;i++){
       types_counters[get<0>(distances[i])]+=1;
       if(types_counters[get<0>(distances[i])]>max){
          max = types_counters[get<0>(distances[i])];
@@ -30,7 +33,7 @@ bool CalculatorKnn::comperator(tuple<string,double> v1,tuple<string,double> v2){
 
 }
 //implemting the rule of 5.
-CalculatorKnn::CalculatorKnn(const CalculatorKnn& other):k(k),classifiedVectors(other.classifiedVectors){}
+CalculatorKnn::CalculatorKnn(const CalculatorKnn& other):classifiedVectors(other.classifiedVectors){}
 CalculatorKnn& CalculatorKnn::operator=(const CalculatorKnn& other){
 	return *this;
 }

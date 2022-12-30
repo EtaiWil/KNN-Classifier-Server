@@ -3,7 +3,7 @@
 double KnnCalcChb::calculateDistance(const vector<double> &firstVector,const vector<double> &secondVector) const{
     return Distance::chebyshevDistance(firstVector,secondVector);
 }
-KnnCalcChb::KnnCalcChb(int k,list<tuple<vector<double>,string>>& classifiedVectors):CalculatorKnn(k,classifiedVectors){}
+KnnCalcChb::KnnCalcChb(list<tuple<vector<double>,string>>& classifiedVectors):CalculatorKnn(classifiedVectors){}
 
 //copy assignment operator
 KnnCalcChb& KnnCalcChb::operator= (const KnnCalcChb& other){
@@ -15,7 +15,7 @@ KnnCalcChb& KnnCalcChb::operator= (const KnnCalcChb& other){
 	return *this;
 }
 //copy constructor 
- KnnCalcChb::KnnCalcChb(const KnnCalcChb& other): CalculatorKnn(other.k, other.classifiedVectors){
+ KnnCalcChb::KnnCalcChb(const KnnCalcChb& other): CalculatorKnn(other.classifiedVectors){
  }
  //move assignment operator
 KnnCalcChb& KnnCalcChb::operator= (KnnCalcChb&& other) noexcept{

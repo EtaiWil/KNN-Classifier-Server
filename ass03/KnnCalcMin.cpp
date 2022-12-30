@@ -3,7 +3,7 @@
 double KnnCalcMin::calculateDistance(const vector<double> &firstVector,const vector<double> &secondVector) const{
     return Distance::minkowskiDistance(firstVector,secondVector,P);
 }
-KnnCalcMin::KnnCalcMin(int k,list<tuple<vector<double>,string>>& classifiedVectors):CalculatorKnn(k,classifiedVectors){}
+KnnCalcMin::KnnCalcMin(list<tuple<vector<double>,string>>& classifiedVectors):CalculatorKnn(classifiedVectors){}
 
 //copy assignment operator
 KnnCalcMin& KnnCalcMin::operator= (const KnnCalcMin& other){
@@ -15,7 +15,7 @@ KnnCalcMin& KnnCalcMin::operator= (const KnnCalcMin& other){
 	return *this;
 }
 //copy constructor 
- KnnCalcMin::KnnCalcMin(const KnnCalcMin& other): CalculatorKnn(other.k, other.classifiedVectors){
+ KnnCalcMin::KnnCalcMin(const KnnCalcMin& other): CalculatorKnn( other.classifiedVectors){
  }
  //move assignment operator
 KnnCalcMin& KnnCalcMin::operator= (KnnCalcMin&& other) noexcept{
