@@ -14,6 +14,22 @@
 #include "Classifier.h"
 using namespace std;
 
+// if port is invalid returs -1,otherwise returns the port number as int
+int getPort(string port)
+{
+  std::size_t found = port.find_first_not_of("0123456789");
+  if (found != std::string::npos)
+  {
+    return -1;
+  }
+  //data return a pointer to the start of the array of char *
+  int portNum = atoi(port.data());
+  if (portNum < 1024 || portNum > 65535)
+  {
+    return -1;
+  }
+  return portNum;
+}
 bool isValidDistance(std::string distance)
 {
     return distance == "MIN" || distance == "MAN" || distance == "CHB" || distance == "AUC" || distance == "CAN";
@@ -115,8 +131,11 @@ std::vector<double> getUserVector()
     return vec;
 }
 
-int main()
+int main(int argc, char *argv[])
 {
+
+
+
     Classifier cl;
     ifstream infile;
     try
@@ -130,6 +149,14 @@ int main()
     // get the data from the file
     cl.getClassifiedVectors(infile);
     infile.close();
+
+
+    const int port_no =getPort(string(argv[2]));
+  if (port_no < 0)
+  {
+    cout << "invalid input" << endl;
+    return -1;
+  }
     const int server_port = 12347;
     // socket creation,SOCK_STREAM is a const for TCP
     int sock = socket(AF_INET, SOCK_STREAM, 0);
