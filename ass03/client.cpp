@@ -192,12 +192,12 @@ int main(int argc, char *argv[])
     }
     catch (exception e)
     {
-      cout << "Not Enough Arguments" << endl;
-      break;
+      cout << "invalid input" << endl;
+      continue;
     }
     if (!isValidVector(userInput))
     {
-      cout << "Invalid Argument For The Vector";
+      cout << "invalid input"<<endl;
       continue;
     }
 
@@ -207,8 +207,8 @@ int main(int argc, char *argv[])
     }
     catch (exception e)
     {
-      cout << "Invalid K argument" << std::endl;
-      break;
+      cout << "invalid input" << std::endl;
+      continue;
     }
     try
     {
@@ -216,30 +216,34 @@ int main(int argc, char *argv[])
     }
     catch (exception e)
     {
-      cout << "Invalid Distance argument" << std::endl;
-      break;
+      cout << "invalid input" << std::endl;
+      continue;
     }
 
     int data_len = input.size();
     int sent_bytes = send(sock, input.data(), data_len, 0);
     if (sent_bytes < 0)
     {
-      // error
+      perror("error sending to server..");
+
     }
-    char buffer[4096];
+    char buffer[4096]={0};
     int expected_data_len = sizeof(buffer);
     int read_bytes = recv(sock, buffer, expected_data_len, 0);
     if (read_bytes == 0)
     {
-      // connection is closed
+      close(sock);
+      return 0;
     }
     else if (read_bytes < 0)
     {
-      // error
+      perror("error recieving from server...");
+
     }
     else
     {
       cout << buffer << endl;
+//buffer={0};
     }
   }
   return 0;

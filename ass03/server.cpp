@@ -13,22 +13,25 @@
 #include <stdexcept>
 #include "Classifier.h"
 using namespace std;
-
+void sendErrorMessage(int sock){
+    string message="invalid input";
+    int sent_bytes = send(sock, message.data(), message.size(), 0);
+}
 // if port is invalid returs -1,otherwise returns the port number as int
 int getPort(string port)
 {
-  std::size_t found = port.find_first_not_of("0123456789");
-  if (found != std::string::npos)
-  {
-    return -1;
-  }
-  //data return a pointer to the start of the array of char *
-  int portNum = atoi(port.data());
-  if (portNum < 1024 || portNum > 65535)
-  {
-    return -1;
-  }
-  return portNum;
+    std::size_t found = port.find_first_not_of("0123456789");
+    if (found != std::string::npos)
+    {
+        return -1;
+    }
+    // data return a pointer to the start of the array of char *
+    int portNum = atoi(port.data());
+    if (portNum < 1024 || portNum > 65535)
+    {
+        return -1;
+    }
+    return portNum;
 }
 bool isValidDistance(std::string distance)
 {
@@ -133,14 +136,22 @@ std::vector<double> getUserVector()
 
 int main(int argc, char *argv[])
 {
+   
+// first is the name of the program second is the path to the dataset and third is the port
 
-
-
+  if (argc != 3)
+  {
+    cout << "invalid input" << endl;
+    return -1;
+  }
+  
     Classifier cl;
     ifstream infile;
     try
     {
-        infile.open("datasets/iris/iris_classified.csv");
+        
+        infile.open(argv[1]);
+       
     }
     catch (exception e)
     {
@@ -149,20 +160,19 @@ int main(int argc, char *argv[])
     // get the data from the file
     cl.getClassifiedVectors(infile);
     infile.close();
-
-
-    const int port_no =getPort(string(argv[2]));
-  if (port_no < 0)
-  {
-    cout << "invalid input" << endl;
-    return -1;
-  }
-    const int server_port = 12347;
+   
+    const int server_port = getPort(string(argv[2]));
+    if (server_port< 0)
+    {
+        cout << "invalid input" << endl;
+        return -1;
+    }
     // socket creation,SOCK_STREAM is a const for TCP
     int sock = socket(AF_INET, SOCK_STREAM, 0);
     if (sock < 0)
     {
         perror("error creating socket");
+        return -1;
     }
     struct sockaddr_in sin;            // struct for address
     memset(&sin, 0, sizeof(sin));      // reset the struct
@@ -173,15 +183,17 @@ int main(int argc, char *argv[])
     if (bind(sock, (struct sockaddr *)&sin, sizeof(sin)) < 0)
     {
         perror("error binding socket");
+        return -1;
     }
     if (listen(sock, 5) < 0)
     { // listen to up to 5 clients at a time
         perror("error listening to a socket");
     }
+    while (true)
+    {
     struct sockaddr_in client_sin; // create a address struct for the sender information
     unsigned int addr_len = sizeof(client_sin);
-    int client_sock = accept(sock, (struct sockaddr *)&client_sin,
-                             &addr_len); // accept command creates a new socket for the client that wanted to connect.
+    int client_sock = accept(sock, (struct sockaddr *)&client_sin,&addr_len); // accept command creates a new socket for the client that wanted to connect.
     if (client_sock < 0)
     { // check if the creation of socket for client failed
         perror("error accepting client");
@@ -190,14 +202,17 @@ int main(int argc, char *argv[])
     {
         char buffer[4096] = {0};                                          // create a buffer for the client
         int expected_data_len = sizeof(buffer);                           // the maximum length of data to recieve
-        int read_bytes = recv(client_sock, buffer, expected_data_len, 0); // recieve a message from the clients socket into the buffer. 
+        int read_bytes = recv(client_sock, buffer, expected_data_len, 0); // recieve a message from the clients socket into the buffer.
         if (read_bytes == 0)
         {
             // connection is closed
+            close(client_sock);
+            break;
         }
         else if (read_bytes < 0)
         {
-            // error
+            //error recieving message occured.
+            continue;
         }
         else
         {
@@ -209,14 +224,9 @@ int main(int argc, char *argv[])
             {
                 userInput = getUserInput(input);
             }
-            catch (std::out_of_range e)
-            {
-                close(sock);
-                break;
-            }
             catch (exception e)
             {
-                cout << "Not Enough Arguments" << endl;
+                sendErrorMessage(client_sock);
                 continue;
             }
             try
@@ -225,7 +235,7 @@ int main(int argc, char *argv[])
             }
             catch (exception e)
             {
-                cout << "Invalid K argument" << std::endl;
+                sendErrorMessage(client_sock);
                 continue;
             }
             try
@@ -234,20 +244,25 @@ int main(int argc, char *argv[])
             }
             catch (exception e)
             {
-                cout << "Invalid Distance argument" << std::endl;
+                sendErrorMessage(client_sock);
                 continue;
             }
 
             if (!isValidVector(userInput))
             {
-                cout << "Invalid Argument For The Vector";
+                sendErrorMessage(client_sock);
                 continue;
             }
             vector<double> vec;
+            try{
             for (int i = 0; i < userInput.size() - 2; i++)
             {
                 // insert the input into the vector.
                 vec.push_back(std::stod(userInput[i]));
+            }
+            }catch(exception e){
+                sendErrorMessage(client_sock);
+                continue;
             }
             string answer;
             try
@@ -257,7 +272,8 @@ int main(int argc, char *argv[])
             }
             catch (exception e)
             {
-                std::cout << "Invalid Vector To Classify" << std::endl;
+                sendErrorMessage(client_sock);
+                continue;
             }
 
             int sent_bytes = send(client_sock, answer.data(), answer.size(), 0);
@@ -268,6 +284,7 @@ int main(int argc, char *argv[])
         }
     }
 
+    }
     close(sock);
     return 0;
 }

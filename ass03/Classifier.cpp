@@ -64,7 +64,8 @@ Classifier&  Classifier::operator= (Classifier&& other) noexcept{
 string Classifier::Classify(const vector<double> &Vector,int k,string distanceType){
     //test if k is valid
     //test if distance type is valid
-    return (this->calcs[distanceType])->Classify(Vector,k);
+    string ans = (this->calcs[distanceType])->Classify(Vector,k);
+    return ans;
 }
 // this function check if the input from the user is valid.
 bool Classifier::isValidDouble(string s){
