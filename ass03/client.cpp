@@ -13,6 +13,30 @@
 #include <stdexcept>
 using namespace std;
 
+bool isValidIpAddress(char *ipAddress)
+{ // use the inet_pton routine to check if the ip address is valid.
+  struct sockaddr_in sa;
+  // if the address is valid reslut will get 1 value.
+  int result = inet_pton(AF_INET, ipAddress, &(sa.sin_addr));
+  return (result == 1);
+}
+
+// if port is invalid returs -1,otherwise returns the port number as int
+int getPort(string port)
+{
+  std::size_t found = port.find_first_not_of("0123456789");
+  if (found != std::string::npos)
+  {
+    return -1;
+  }
+  //data return a pointer to the start of the array of char *
+  int portNum = atoi(port.data());
+  if (portNum < 1024 || portNum > 65535)
+  {
+    return -1;
+  }
+  return portNum;
+}
 bool isValidDistance(std::string distance)
 {
   return distance == "MIN" || distance == "MAN" || distance == "CHB" || distance == "AUC" || distance == "CAN";
@@ -105,19 +129,36 @@ std::vector<double> getUserVector()
 }
 bool isValidVector(std::vector<string> vec)
 {
-    for (int i = 0; i < vec.size() - 2; i++)
+  for (int i = 0; i < vec.size() - 2; i++)
+  {
+    if (!isValidDouble(vec[i]))
     {
-        if (!isValidDouble(vec[i]))
-        {
-            return false;
-        }
+      return false;
     }
-    return true;
+  }
+  return true;
 }
-int main()
+
+int main(int argc, char *argv[])
 {
-  const char *ip_address = "127.0.0.1";
-  const int port_no = 12345;
+  // first is the name of the program second is the ip and third is the ip
+  if (argc != 3)
+  {
+    cout << "invalid input" << endl;
+    return -1;
+  }
+  const int port_no =getPort(string(argv[2]));
+  if (port_no < 0)
+  {
+    cout << "invalid input" << endl;
+    return -1;
+  }
+  if(!isValidIpAddress(argv[1])){
+    cout << "invalid input" << endl;
+    return -1;
+  }
+
+  const char *ip_address = argv[1];
   int sock = socket(AF_INET, SOCK_STREAM, 0);
   if (sock < 0)
   {
@@ -154,11 +195,11 @@ int main()
       cout << "Not Enough Arguments" << endl;
       break;
     }
-     if (!isValidVector(userInput))
-        {
-            cout << "Invalid Argument For The Vector";
-            continue;
-        }
+    if (!isValidVector(userInput))
+    {
+      cout << "Invalid Argument For The Vector";
+      continue;
+    }
 
     try
     {
@@ -198,45 +239,8 @@ int main()
     }
     else
     {
-      cout << buffer<<endl;
+      cout << buffer << endl;
     }
-
-    // cout<<"k= "<<k<<" distance = "<<distance<<endl;
-
-    /*
-            const char* ip_address = "127.0.0.1";
-            const int port_no = 5555;
-            int sock = socket(AF_INET, SOCK_STREAM, 0);
-            if (sock < 0) {
-            perror("error creating socket");
-            }
-            struct sockaddr_in sin;
-            memset(&sin, 0, sizeof(sin));
-            sin.sin_family = AF_INET;
-            sin.sin_addr.s_addr = inet_addr(ip_address);
-            sin.sin_port = htons(port_no);
-            if (connect(sock, (struct sockaddr *) &sin, sizeof(sin)) < 0) { perror("error connecting to server");
-            }
-            char data_addr[] = "Im a message";
-            int data_len = strlen(data_addr);
-            int sent_bytes = send(sock, data_addr, data_len, 0);
-            if (sent_bytes < 0) {
-            // error
-            }
-            char buffer[4096];
-            int expected_data_len = sizeof(buffer);
-            int read_bytes = recv(sock, buffer, expected_data_len, 0);
-            if (read_bytes == 0) {
-            // connection is closed
-            }
-            else if (read_bytes < 0) {
-            // error
-            }
-            else {
-            cout << buffer; }
-            close(sock);
-            return 0;
-            */
   }
   return 0;
 }

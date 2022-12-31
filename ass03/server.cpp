@@ -130,7 +130,7 @@ int main()
     // get the data from the file
     cl.getClassifiedVectors(infile);
     infile.close();
-    const int server_port = 12345;
+    const int server_port = 12347;
     // socket creation,SOCK_STREAM is a const for TCP
     int sock = socket(AF_INET, SOCK_STREAM, 0);
     if (sock < 0)
