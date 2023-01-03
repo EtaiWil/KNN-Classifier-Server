@@ -14,6 +14,7 @@ as a result we got an answer from the server that the wine that the vector is cl
 
 ## compile and run instructions
 **Compile by `> make` and run by running a server and a client.**
+
 server : `> server.out FilePath PortNumber`
 client : `> client.out ServerIp ServerPort`
 after running both, the client should enter a valid vector seperated by spaces, a distance Metric shortcut from the valid options and a valid K. 
