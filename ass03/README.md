@@ -1,25 +1,28 @@
-## Assignment 2
-This is Etai and Oz README for Ass2 where we implemented the KNN Algorithm.
+## Assignment 3
+This is Etai and Oz README for Assignment 3 where we implemented the KNN Algorithm on a TCP server, with a client side to send over the requested data to classify.
 ## Introduction
 K-nearest neighbors (KNN) is a supervised machine learning algorithm that can be used for classification or regression. In the case of classification, the algorithm finds the K data points in the training dataset that are closest to the new data point, and then assigns the new data point to the class that those K data points belong to.
+Transmission Control Protocol (TCP) is a standard that defines how to establish and maintain a network conversation by which applications can exchange data.
+TCP is a connection-oriented protocol, which means a connection is established and maintained until the applications at each end have finished exchanging messages.
 ## how we implemented:
-We did this by creating an abstract `CalculatorKnn` class which implemented the algorithm and used a virtual unimplemented method that is called `calculateDistance`.
-By doing so, each class that inherits from `CalculatorKnn`needs to implement this method. in each of the inheriting classes we have implemented this method with the `Distance` class we wrote in the last assignment.
-
-We also created a `Classifier` class that gets a K for the number of KNN and a string repressenting the Distance we want to calculate, the `classifier` creates a list of vectors and their classification in a tuple from the file given as an argument.
-The classifier also creates a calculator of the requested type with the given K and the list of vectors that we read from the given file.
-By creating the calculator inside the Classifier we have done **composition**.
-Eventually after reading all the classified vectors, the program gets a vector from the user to classify, and it classifies it with the `classify` method that gets the vector and returns a string - the classification of the vector.
+We modified our first implementation of the Classifier class we built in [assignment 2](https://github.com/EtaiWil/advanced-programming-1/tree/main/ass02) to get K and the desired Distance Type as arguments to the Classify function instead of the constructor. The classifier holds KNN calculators (which we also built in this assignment) of each distance type (they all inherit from abstrct class with a virtual distance calculation function) in a map of string keys and the calculators as values. when getting the request from the client we use the requested distance type string to get the matching calculator and request from him to classify the given vector with a given K value from the client.
+When the client sends a vector, a distance type and a K value, we validate the input and use the calculatorKnn classify method to get it's classification from the vectors we first read from the file.
 ## run example
-in this example we loaded a dataset that contains wine types and we have entered a vector that repressents an unclassified wine.
-as a result we got that the wine that the vector is closest to by manhattan distance and k=7 is a white wine
-![image](https://user-images.githubusercontent.com/93612510/207716599-5f8f22cf-a801-407c-b1a1-f69933eb32c3.png)
+in this example we loaded a dataset that contains wine types and we have entered a vector, the Manhattan distance shortcut and K=8.
+as a result we got an answer from the server that the wine that the vector is closest to by Manhattan distance and k=8 is a white wine
+![image](https://user-images.githubusercontent.com/93612510/210455619-7cf58f39-154e-4cea-94fc-33b038bd1436.png)
 
 ##compile and run instructions
-**Compile by `> make` and run by `> a.out k file distance` with k being the K for KNN, file being the path to the Classfied vectors file,and distance being a distance to use**
+**Compile by `> make` and run by running a server and a client.
+server : `> server.out FilePath PortNumber`
+client : '> client.out ServerIp ServerPort`
+after running both, the client should enter a valid vector seperated by spaces, a distance Metric shortcut from the valid options and a valid K. 
 distance options:
 - AUC - Euclidian Distance
 - MAN - Manhattan Distance
 - CHB - Chebyshev Distance
 - CAN - Canberra Distance
 - MIN - Minkowski Distance
+
+##### please note:
+_if the given K is bigger than the dataset, the returned output will be according to the number of vectors in the dataset instead_
