@@ -12,10 +12,10 @@ in this example we loaded a dataset that contains wine types and we have entered
 as a result we got an answer from the server that the wine that the vector is closest to by Manhattan distance and k=8 is a white wine
 ![image](https://user-images.githubusercontent.com/93612510/210455619-7cf58f39-154e-4cea-94fc-33b038bd1436.png)
 
-##compile and run instructions
-**Compile by `> make` and run by running a server and a client.
+## compile and run instructions
+**Compile by `> make` and run by running a server and a client.**
 server : `> server.out FilePath PortNumber`
-client : '> client.out ServerIp ServerPort`
+client : `> client.out ServerIp ServerPort`
 after running both, the client should enter a valid vector seperated by spaces, a distance Metric shortcut from the valid options and a valid K. 
 distance options:
 - AUC - Euclidian Distance
