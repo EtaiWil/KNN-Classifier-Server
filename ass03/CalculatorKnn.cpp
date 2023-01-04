@@ -1,7 +1,7 @@
 #include "CalculatorKnn.h"
 // initalize all the vectors in list that every element store at tuple.(constractor). 
 CalculatorKnn::CalculatorKnn(list<tuple<vector<double>,string>>& classifiedVectors):classifiedVectors(classifiedVectors){ }
-// get the type of the desierd vector we want to classify.
+// get the type of the desierd vector we want to classify and the K to classify by.
 string CalculatorKnn::Classify(const vector<double> &Vector,int k) const{
    if(this->classifiedVectors.size()<k){
       k=this->classifiedVectors.size();

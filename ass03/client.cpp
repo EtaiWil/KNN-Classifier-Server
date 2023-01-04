@@ -1,48 +1,46 @@
-#include <iostream>
-#include <sys/socket.h>
-#include <stdio.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <unistd.h>
-#include <string.h>
-#include <string>
-#include <vector>
-#include <fstream>
-#include <iostream>
-#include <sstream>
-#include <stdexcept>
-using namespace std;
+#include "client.h"
 
-bool isValidIpAddress(char *ipAddress)
+bool Client::isValidIpAddress(char *ipAddress)
 { // use the inet_pton routine to check if the ip address is valid.
   struct sockaddr_in sa;
   // if the address is valid reslut will get 1 value.
   int result = inet_pton(AF_INET, ipAddress, &(sa.sin_addr));
+  // will return true if ip is valid.
   return (result == 1);
 }
 
 // if port is invalid returs -1,otherwise returns the port number as int
-int getPort(string port)
+int Client::getPort(string port)
 {
+  // look for a non integer char in the port string
   std::size_t found = port.find_first_not_of("0123456789");
-  if (found != std::string::npos)
+  if (found != std::string::npos) // if found return -1
   {
     return -1;
   }
-  //data return a pointer to the start of the array of char *
-  int portNum = atoi(port.data());
+  // data return a pointer to the start of the array of char *
+  int portNum = atoi(port.data()); // convert the port into int (can because of first check)
   if (portNum < 1024 || portNum > 65535)
   {
     return -1;
   }
   return portNum;
 }
-bool isValidDistance(std::string distance)
+// check if the string is one of the valid distances.
+bool Client::isValidDistance(std::string distance)
 {
   return distance == "MIN" || distance == "MAN" || distance == "CHB" || distance == "AUC" || distance == "CAN";
 }
+// check if the char is dot.
+bool Client::isDot(char c)
+{
+  if (c == '.')
+    return true;
+  else
+    return false;
+}
 // this function check if the input from the user is valid.
-bool isValidDouble(std::string s)
+bool Client::isValidDouble(std::string s)
 {
   if (s.length() == 0)
   {
@@ -54,11 +52,24 @@ bool isValidDouble(std::string s)
   {
     return false;
   }
+  // if ther is more then one dot in a string it can not represent a vector so it is not valid.
+  size_t count = std::count_if(s.begin(), s.end(), isDot);
+  if (count > 1)
+  {
+    return false;
+  }
+  // if the last char in the string is dot its mean that the input is not valide example "1."
+
+  if (s.back() == '.')
+  {
+    return false;
+  }
   return true;
 }
-
-std::vector<std::string> getUserInput(string input)
+// if the user enterd -1 we need to finish the program.
+std::vector<std::string> Client::getUserInput(string input)
 {
+  // if inserted -1 we need to finish the program.
   if (input == "-1")
   {
     throw std::out_of_range("close the program");
@@ -75,13 +86,15 @@ std::vector<std::string> getUserInput(string input)
     // insert the input into the vector.
     vec.push_back(token);
   }
+  // if the input is too small
   if (vec.size() < 3)
   {
     throw std::invalid_argument("Not Enough Arguments");
   }
   return vec;
 }
-std::string getUserDistance(vector<std::string> input)
+// check here if the input distance by the user is valid.
+std::string Client::getUserDistance(vector<std::string> input)
 {
   if (!isValidDistance(input[input.size() - 2]))
   {
@@ -89,7 +102,8 @@ std::string getUserDistance(vector<std::string> input)
   }
   return input[input.size() - 2];
 }
-int getUserK(vector<std::string> input)
+// check if the k given by the user if valid.
+int Client::getUserK(vector<std::string> input)
 {
   std::size_t found = input[input.size() - 1].find_first_not_of("0123456789");
   if (found != std::string::npos)
@@ -104,7 +118,7 @@ int getUserK(vector<std::string> input)
   return k;
 }
 // this function get the input from the user and then insert the valid input into vector.
-std::vector<double> getUserVector()
+std::vector<double> Client::getUserVector()
 {
   std::string input;
   // getting all the line fromn the user.
@@ -127,7 +141,8 @@ std::vector<double> getUserVector()
   }
   return vec;
 }
-bool isValidVector(std::vector<string> vec)
+// check the inputs to see if one contains invalid double.
+bool Client::isValidVector(std::vector<string> vec)
 {
   for (int i = 0; i < vec.size() - 2; i++)
   {
@@ -147,31 +162,41 @@ int main(int argc, char *argv[])
     cout << "invalid input" << endl;
     return -1;
   }
-  const int port_no =getPort(string(argv[2]));
+  // stote the prot number in Server_port  if the number is -1 its not valid otherwise valid.
+  const int port_no = Client::getPort(string(argv[2]));
   if (port_no < 0)
   {
     cout << "invalid input" << endl;
     return -1;
   }
-  if(!isValidIpAddress(argv[1])){
+  // check if the if that given by the user is valid.
+  if (!Client::isValidIpAddress(argv[1]))
+  {
     cout << "invalid input" << endl;
     return -1;
   }
-
+  // store the argument from the user now check if he is vaalid.
   const char *ip_address = argv[1];
   int sock = socket(AF_INET, SOCK_STREAM, 0);
+  // if negative its mean that we did not succesed to create a socket.
   if (sock < 0)
   {
     perror("error creating socket");
+    return -1;
   }
-  struct sockaddr_in sin;
-  memset(&sin, 0, sizeof(sin));
-  sin.sin_family = AF_INET;
-  sin.sin_addr.s_addr = inet_addr(ip_address);
-  sin.sin_port = htons(port_no);
-  if (connect(sock, (struct sockaddr *)&sin, sizeof(sin)) < 0)
+  struct sockaddr_in sin;                                      // struct for address
+  memset(&sin, 0, sizeof(sin));                                // reset the struct
+  sin.sin_family = AF_INET;                                    // address protocol type
+  sin.sin_addr.s_addr = inet_addr(ip_address);                 // convert ip address to binary to create socket.
+  sin.sin_port = htons(port_no);                               // convert port to network order bytes
+  if (connect(sock, (struct sockaddr *)&sin, sizeof(sin)) < 0) // if connection to server fails
   {
+    // print error message.
     perror("error connecting to server");
+    // close socket
+    close(sock);
+    // close the program
+    return -1;
   }
   while (true)
   {
@@ -183,68 +208,89 @@ int main(int argc, char *argv[])
     vector<string> userInput;
     try
     {
-      userInput = getUserInput(input);
+      // get the user input in a vector (seperated by spaces).
+      userInput = Client::getUserInput(input);
     }
-    catch (std::out_of_range e)
+    catch (std::out_of_range e) // if -1 is inserted by the user
     {
-      close(sock);
+      close(sock); // close the connection with the server
+      // close the
       break;
     }
-    catch (exception e)
+    catch (exception e) // if the user did not give enough data (missing at least one argument for vector)
     {
       cout << "invalid input" << endl;
+      // move to the next input from the user.
       continue;
     }
-    if (!isValidVector(userInput))
+    if (!Client::isValidVector(userInput)) // if the user inserted an invalid vector (numbers)
     {
-      cout << "invalid input"<<endl;
+      cout << "invalid input" << endl;
+      // move to the next input from the user.
       continue;
     }
 
     try
     {
-      k = getUserK(userInput);
+      // get the K from the user input vector
+      k = Client::getUserK(userInput);
     }
-    catch (exception e)
+    catch (exception e) // if the K is invalid
     {
       cout << "invalid input" << std::endl;
+      // move to the next input from the user.
       continue;
     }
     try
     {
-      distance = getUserDistance(userInput);
+      // get the distance metric from the user
+      distance = Client::getUserDistance(userInput);
     }
-    catch (exception e)
+    catch (exception e) // if the distance metric is invalid
     {
       cout << "invalid input" << std::endl;
+      // move to the next input from the user.
       continue;
     }
-
+    // length of the message
     int data_len = input.size();
+    // send the given input to the user.
     int sent_bytes = send(sock, input.data(), data_len, 0);
-    if (sent_bytes < 0)
+    if (sent_bytes < 0) // if sending the message fails.
     {
       perror("error sending to server..");
-
+      // move to the next input from the user.
+      continue;
     }
-    char buffer[4096]={0};
+    // buffer for server messages.
+    char buffer[4096] = {0};
+    // maximum excpected message size from the server
     int expected_data_len = sizeof(buffer);
+    // get message from the server using the recv function.
     int read_bytes = recv(sock, buffer, expected_data_len, 0);
-    if (read_bytes == 0)
+    if (read_bytes == 0) // if the connection is closed.
     {
+      // close the socket.
       close(sock);
+      // close the program.
       return 0;
     }
-    else if (read_bytes < 0)
+    else if (read_bytes < 0) // if receiving the message failds
     {
+      // print error message
       perror("error recieving from server...");
-
+      // close the connection
+      close(sock);
+      // close the program
+      return -1;
     }
+
     else
     {
+      // print the message from the server.
       cout << buffer << endl;
-//buffer={0};
     }
   }
+  // end the program
   return 0;
 }

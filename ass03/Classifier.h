@@ -15,29 +15,29 @@
 #include "KnnCalcMan.h"
 #include "KnnCalcChb.h"
 
-
 using namespace std;
-class  Classifier
+class Classifier
 {
 private:
-    list<tuple<vector<double>,string>>& classifiedVectors;
-    //using comopsition
-    map<string,CalculatorKnn*>& calcs;
+    list<tuple<vector<double>, string>> &classifiedVectors;
+    // using comopsition have a map of a caclcuatorknn as  a member.
+    map<string, CalculatorKnn *> &calcs;
     bool isValidDouble(string s);
-    //used to delete what we allocate on the heap
+    // used to delete what we allocate on the heap
     void reset() noexcept;
-    //return Knn calcuator by given input .
-    map<string,CalculatorKnn*>& getCalcs();
+    // return Knn calcuator by given input .
+    map<string, CalculatorKnn *> &getCalcs();
+
 public:
     Classifier();
-    Classifier (const Classifier& other); //copy constructor
-    Classifier& operator= (const Classifier& other); //copy assignment operator
-    Classifier (Classifier&& other) noexcept=default; //move constructor
-    Classifier& operator= (Classifier&& other) noexcept; //move assignment operator
-    ~Classifier(); //destructor
-    void getClassifiedVectors(istream& is);
-    string Classify(const vector<double> &Vector,int k,string distanceType);
-   
-
+    Classifier(const Classifier &other);                // copy constructor
+    Classifier &operator=(const Classifier &other);     // copy assignment operator
+    Classifier(Classifier &&other) noexcept = default;  // move constructor
+    Classifier &operator=(Classifier &&other) noexcept; // move assignment operator
+    ~Classifier();                                      // destructor
+    // get the classified vectors into the vectors list from the given stream.
+    void getClassifiedVectors(istream &is);
+    // this function calcualte the distance based on input from the user create new knn based on the string
+    string Classify(const vector<double> &Vector, int k, string distanceType);
 };
 #endif
