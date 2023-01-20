@@ -1,3 +1,4 @@
+
 #include "StandartIO.h"
 string StandartIO::read(){
     string s;
@@ -7,4 +8,3 @@ string StandartIO::read(){
 void StandartIO::write(string s){
 cout<<s<<endl;
 }
-
