@@ -1,0 +1,3 @@
+/mnt/c/Users/uziam/Code/advanced-programming-1/build/CMakeFiles/ass03.dir
+/mnt/c/Users/uziam/Code/advanced-programming-1/build/CMakeFiles/edit_cache.dir
+/mnt/c/Users/uziam/Code/advanced-programming-1/build/CMakeFiles/rebuild_cache.dir
