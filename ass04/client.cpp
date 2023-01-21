@@ -154,143 +154,89 @@ bool Client::isValidVector(std::vector<string> vec)
   return true;
 }
 
-int main(int argc, char *argv[])
-{
-  // first is the name of the program second is the ip and third is the ip
-  if (argc != 3)
-  {
-    cout << "invalid input" << endl;
-    return -1;
-  }
-  // stote the prot number in Server_port  if the number is -1 its not valid otherwise valid.
-  const int port_no = Client::getPort(string(argv[2]));
-  if (port_no < 0)
-  {
-    cout << "invalid input" << endl;
-    return -1;
-  }
-  // check if the if that given by the user is valid.
-  if (!Client::isValidIpAddress(argv[1]))
-  {
-    cout << "invalid input" << endl;
-    return -1;
-  }
-  // store the argument from the user now check if he is vaalid.
-  const char *ip_address = argv[1];
-  int sock = socket(AF_INET, SOCK_STREAM, 0);
-  // if negative its mean that we did not succesed to create a socket.
-  if (sock < 0)
-  {
-    perror("error creating socket");
-    return -1;
-  }
-  struct sockaddr_in sin;                                      // struct for address
-  memset(&sin, 0, sizeof(sin));                                // reset the struct
-  sin.sin_family = AF_INET;                                    // address protocol type
-  sin.sin_addr.s_addr = inet_addr(ip_address);                 // convert ip address to binary to create socket.
-  sin.sin_port = htons(port_no);                               // convert port to network order bytes
-  if (connect(sock, (struct sockaddr *)&sin, sizeof(sin)) < 0) // if connection to server fails
-  {
-    // print error message.
-    perror("error connecting to server");
-    // close socket
-    close(sock);
-    // close the program
-    return -1;
-  }
-  while (true)
-  {
-    std::string input;
-    // getting all the line fromn the user.
-    std::getline(std::cin, input);
-    std::string distance;
-    int k;
-    vector<string> userInput;
-    try
-    {
-      // get the user input in a vector (seperated by spaces).
-      userInput = Client::getUserInput(input);
+int main(int argc, char *argv[]) {
+    // first is the name of the program second is the ip and third is the ip
+    if (argc != 3) {
+        cout << "invalid input" << endl;
+        return -1;
     }
-    catch (std::out_of_range e) // if -1 is inserted by the user
-    {
-      close(sock); // close the connection with the server
-      // close the
-      break;
+    // stote the prot number in Server_port  if the number is -1 its not valid otherwise valid.
+    const int port_no = Client::getPort(string(argv[2]));
+    if (port_no < 0) {
+        cout << "invalid input" << endl;
+        return -1;
     }
-    catch (exception e) // if the user did not give enough data (missing at least one argument for vector)
-    {
-      cout << "invalid input" << endl;
-      // move to the next input from the user.
-      continue;
+    // check if the if that given by the user is valid.
+    if (!Client::isValidIpAddress(argv[1])) {
+        cout << "invalid input" << endl;
+        return -1;
     }
-    if (!Client::isValidVector(userInput)) // if the user inserted an invalid vector (numbers)
+    // store the argument from the user now check if he is vaalid.
+    const char *ip_address = argv[1];
+    int sock = socket(AF_INET, SOCK_STREAM, 0);
+    // if negative its mean that we did not succesed to create a socket.
+    if (sock < 0) {
+        perror("error creating socket");
+        return -1;
+    }
+    struct sockaddr_in sin;                                      // struct for address
+    memset(&sin, 0, sizeof(sin));                                // reset the struct
+    sin.sin_family = AF_INET;                                    // address protocol type
+    sin.sin_addr.s_addr = inet_addr(ip_address);                 // convert ip address to binary to create socket.
+    sin.sin_port = htons(port_no);                               // convert port to network order bytes
+    if (connect(sock, (struct sockaddr *) &sin, sizeof(sin)) < 0) // if connection to server fails
     {
-      cout << "invalid input" << endl;
-      // move to the next input from the user.
-      continue;
+        // print error message.
+        perror("error connecting to server");
+        // close socket
+        close(sock);
+        // close the program
+        return -1;
+    }
+    while (true) {
+        char buffer[4096] = {0};
+        // maximum excpected message size from the server
+        int expected_data_len = sizeof(buffer);
+        // get message from the server using the recv function.
+        int read_bytes = recv(sock, buffer, expected_data_len, 0);
+        if (read_bytes == 0) // if the connection is closed.
+        {
+            // close the socket.
+            close(sock);
+            // close the program.
+            return 0;
+        } else if (read_bytes < 0) // if receiving the message fails
+        {
+            // print error message
+            perror("error recieving from server...");
+        // close the connection
+        close(sock);
+        // close the program
+        return -1;
+    }else
+        {
+            // print the message from the server.
+            cout << buffer << endl;
+        }
+        std::string input;
+        // getting all the line fromn the user.
+        std::getline(std::cin, input);
+        input.append("\n\n");
+
+        // length of the message
+        int data_len = input.size();
+        // send the given input to the user.
+        int sent_bytes = send(sock, input.data(), data_len, 0);
+        if (sent_bytes < 0) // if sending the message fails.
+        {
+            perror("error sending to server..");
+            // move to the next input from the user.
+            continue;
+        }
+        // buffer for server messages.
+
     }
 
-    try
-    {
-      // get the K from the user input vector
-      k = Client::getUserK(userInput);
-    }
-    catch (exception e) // if the K is invalid
-    {
-      cout << "invalid input" << std::endl;
-      // move to the next input from the user.
-      continue;
-    }
-    try
-    {
-      // get the distance metric from the user
-      distance = Client::getUserDistance(userInput);
-    }
-    catch (exception e) // if the distance metric is invalid
-    {
-      cout << "invalid input" << std::endl;
-      // move to the next input from the user.
-      continue;
-    }
-    // length of the message
-    int data_len = input.size();
-    // send the given input to the user.
-    int sent_bytes = send(sock, input.data(), data_len, 0);
-    if (sent_bytes < 0) // if sending the message fails.
-    {
-      perror("error sending to server..");
-      // move to the next input from the user.
-      continue;
-    }
-    // buffer for server messages.
-    char buffer[4096] = {0};
-    // maximum excpected message size from the server
-    int expected_data_len = sizeof(buffer);
-    // get message from the server using the recv function.
-    int read_bytes = recv(sock, buffer, expected_data_len, 0);
-    if (read_bytes == 0) // if the connection is closed.
-    {
-      // close the socket.
-      close(sock);
-      // close the program.
-      return 0;
-    }
-    else if (read_bytes < 0) // if receiving the message failds
-    {
-      // print error message
-      perror("error recieving from server...");
-      // close the connection
-      close(sock);
-      // close the program
-      return -1;
-    }
-
-    else
-    {
-      // print the message from the server.
-      cout << buffer << endl;
-    }
-  }
   // end the program
   return 0;
 }

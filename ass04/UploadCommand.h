@@ -6,8 +6,9 @@
 using namespace std;
 class UploadCommand : public Command {
     public:
-    UploadCommand(CLI& cli,string description,DefaultIO& dio);
+    UploadCommand(CLI& cli,DefaultIO &dio);
     virtual void execute();
+    ~UploadCommand()=default;
 
 };
 #endif

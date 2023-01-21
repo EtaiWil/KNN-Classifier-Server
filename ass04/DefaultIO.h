@@ -5,6 +5,7 @@ using namespace std;
 //this is an absract class for the IO operations.
 class DefaultIO{
 public:
+    DefaultIO()=default;
 virtual std::string read()=0;
 virtual void write(std::string s)=0;
 };

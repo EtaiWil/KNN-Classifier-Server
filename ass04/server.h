@@ -14,6 +14,8 @@
 #include <sstream>
 #include <stdexcept>
 #include <algorithm>
+#include "CLI.h"
+#include "SocketIO.h"
 #include "Classifier.h"
 using namespace std;
 class Server{

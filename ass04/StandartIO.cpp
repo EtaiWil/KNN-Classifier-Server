@@ -2,7 +2,7 @@
 #include "StandartIO.h"
 string StandartIO::read(){
     string s;
-    cin>>s;
+    getline(cin,s);
     return s;
 }
 void StandartIO::write(string s){

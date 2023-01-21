@@ -6,9 +6,11 @@
 using namespace std;
 
 
-//this is an absract class for the IO operations.
+//this is an class for the IO operations from terminal.
 class StandartIO : public DefaultIO {
-virtual std::string read();
-virtual void write(std::string s);
+public:
+    StandartIO()=default;
+    virtual std::string read();
+    virtual void write(std::string s);
 };
 #endif

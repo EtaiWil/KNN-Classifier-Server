@@ -33,6 +33,6 @@ public:
 	CalculatorKnn& operator=(const CalculatorKnn& other);
 	CalculatorKnn(CalculatorKnn&& other) noexcept=default;
 	CalculatorKnn& operator=(CalculatorKnn&& other) noexcept;
-    ~CalculatorKnn()=default;
+    virtual ~CalculatorKnn()=default;
 };
 #endif

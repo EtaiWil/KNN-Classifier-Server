@@ -148,41 +148,24 @@ std::vector<double> Server::getUserVector()
     }
     return vec;
 }
-
+void handleClient(int sock){
+    SocketIO sio(sock);
+    CLI cli(sio);
+    cli.start();
+    close(sock);
+}
 int main(int argc, char *argv[])
 {
 
     // first is the name of the program second is the path to the dataset and third is the port
 
-    if (argc != 3)
+    if (argc != 2)
     {
         cout << "invalid input" << endl;
         return -1;
     }
-
-    Classifier cl;
-    ifstream infile;
-    try
-    {
-        // open the file
-        infile.open(argv[1]);
-        //if file is invalid (non existing or locked)
-        if(!infile.good())
-        {
-            infile.close();
-            cout<<"invalid input"<<endl;
-            return -1;
-        }
-    }
-    catch (exception e)
-    {
-        cout << "problem opening file" << endl;
-    }
-    // get the data from the file
-    cl.getClassifiedVectors(infile);
-    infile.close();
     // stote the prot number in Server_port  if the number is -1 its not valid otherwise valid.
-    const int Server_port = Server::getPort(string(argv[2]));
+    const int Server_port = Server::getPort(string(argv[1]));
     //if the getPort returns -1 the port argument is invalid.
         if (Server_port < 0)
     {
@@ -224,109 +207,8 @@ int main(int argc, char *argv[])
         { // check if the creation of socket for client failed
             perror("error accepting client");
         }
-        while (true)
-        {
-            char buffer[4096] = {0};                                          // create a buffer for the client
-            int expected_data_len = sizeof(buffer);                           // the maximum length of data to recieve
-            int read_bytes = recv(client_sock, buffer, expected_data_len, 0); // recieve a message from the clients socket into the buffer.
-            if (read_bytes == 0)
-            {
-                // connection is closed
-                close(client_sock);
-                break;
-            }
-            else if (read_bytes < 0)
-            {
-                // error recieving message occured.
-                continue;
-            }
-            else
-            {
-                string input(buffer);
-                std::string distance;
-                int k;
-                vector<string> userInput;
-                try
-                {
-                    // try to get input from the user
-                    userInput = Server::getUserInput(input);
-                }
-                catch (exception e) // if getting the input from the user is invalid.
-                {
-                    Server::sendErrorMessage(client_sock);
-                    // continue to get the next message from the client.
-                    continue;
-                }
-                try
-                {
-                    // check if the given k is valid. if so get it in k.
-                    k = Server::getUserK(userInput);
-                }
-                catch (exception e) // if the given k is invalid
-                {
-                    Server::sendErrorMessage(client_sock);
-                    // continue to get the next message from the client.
-                    continue;
-                }
-                try
-                {
-                    // get the distance metric into distance.
-                    distance = Server::getUserDistance(userInput);
-                }
-                catch (exception e) // if the distance metric is not valid.
-                {
-                    Server::sendErrorMessage(client_sock);
-                    // continue to get the next message from the client.
-                    continue;
-                }
-                // check the inputs to see if one contains invalid double.
-                if (!Server::isValidVector(userInput))
-                {
-                    Server::sendErrorMessage(client_sock);
-                    // continue to get the next message from the client.
-                    continue;
-                }
-                vector<double> vec;
-                try
-                {
-                    for (int i = 0; i < userInput.size() - 2; i++) // all the strings without the distance metric and the k.
-                    {
-                        // insert the input into the vector.
-                        vec.push_back(std::stod(userInput[i]));
-                    }
-                }
-                catch (exception e) // if stod throws exception - invalid vector input.
-                {
-                    Server::sendErrorMessage(client_sock);
-                    continue;
-                }
-                string answer;
-                try
-                {
-                    // get the answer for the classification
-                    answer = cl.Classify(vec, k, distance);
-                }
-                catch (exception e)
-                {
-                    // if the classification proccess fails
-                    Server::sendErrorMessage(client_sock);
-                    // send a message and continue to the next message the client sends.
-                    continue;
-                }
+        handleClient(client_sock);
 
-                int sent_bytes = send(client_sock, answer.data(), answer.size(), 0);
-                // if message send fails.
-                if (sent_bytes < 0)
-                {
-                    // print the error message
-                    perror("error sending to client");
-                    // close the connection to the client.
-                    close(client_sock);
-                    // move over to accept the next client.
-                    break;
-                }
-            }
-        }
     }
     // close the main socket that listens
     close(sock);

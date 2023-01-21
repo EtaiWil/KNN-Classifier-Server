@@ -4,7 +4,9 @@ using namespace std;
 
 int main(){
     StandartIO sio;
-    CLI cli=CLI(sio);
-    cli.start();
+
+    CLI cli(sio);
+        cli.start();
     cout<<"done"<<endl;
+    return 0;
 }

@@ -2,29 +2,42 @@
 //move it to here because there are 3 implementation dependency between cli class uplodadcommand c command.
 #include "CLI.h"
 #include "UploadCommand.h"
+#include "SettingCommand.h"
+#include "ClassifyCommand.h"
+#include "PrintCommand.h"
+#include "SendCommand.h"
+#include "ExitCommand.h"
 
-
-CLI::CLI(DefaultIO& dio):dio(dio),cl(Classifier()),testVectors(*(new list<tuple<vector<double>, string>>)),commands(getCommands()){}
+CLI::CLI(DefaultIO& dio):dio(dio),cl(Classifier()),testVectors(*(new list<tuple<vector<double>, string>>)),commands(getCommands(dio)){
+    this->k=5;
+    this->distanceMetric="AUC";
+}
 void CLI::getTrainVectors(string s){
     std::istringstream is(s);
     cl.getClassifiedVectors(is);
+    int x=3;
 }
-vector<Command*>& CLI::getCommands(){
+vector<Command*>& CLI::getCommands(DefaultIO& dio){
     vector<Command*> &commands=*(new vector<Command*>());
-    commands.push_back(new UploadCommand(*(this),std::string("upload an unclassified csv data file"),dio));
+    commands.push_back(new UploadCommand(*(this),dio));
+    commands.push_back(new SettingCommand(*(this),dio));
+    commands.push_back(new ClassifyCommand(*(this),dio));
+     commands.push_back(new PrintCommand(*(this),dio));
+     commands.push_back(new SendCommand((*this),dio));
+    commands.push_back(new ExitCommand((*this),dio));
     return commands;
 }
 void CLI::getTestVectors(string s){
     std::istringstream is(s);
-    string token;
-    while (getline(is, token))
+    string lineToken;
+    while (getline(is, lineToken))
     {
-        // getting all the line fromn the user.
+        // getting all the line from the user.
         std::vector<double> vec;
         // split the input into tokens every time in the line that "" is appering the token store the string before the "".
         std::string token;
         // read the data into the stringstream
-        std::istringstream iss(s);
+        std::istringstream iss(lineToken);
         tuple<vector<double>, string> unclassifiedItem;
         vector<string> tokens;
         // split by any ',' (',' key)
@@ -32,7 +45,7 @@ void CLI::getTestVectors(string s){
         {
             tokens.push_back(token);
         }
-        for (int i = 0; i < tokens.size(); i++)
+        for(int i = 0; i < tokens.size(); i++)
         {
             if (!isValidDouble(tokens[i]))
             {
@@ -61,15 +74,97 @@ bool CLI::isValidDouble(string s)
     }
     return true;
 }
-void CLI::start(){
-    this->dio.write("Welcome to the KNN Classifier Server. Please choose an option:");
+void CLI::displayMenu(){
+    string s="";
+    s.append("Welcome to the KNN Classifier Server. Please choose an option:\n");
     for(int i=0;i<this->commands.size();i++){
-        string index=std::to_string(i+1);
-        string s=index+commands[i]->getDesc();
-        this->dio.write(s);
+        string index;
+        if(i!=5){
+            index=std::to_string(i+1);
+        }else{
+            index=std::to_string(i+3);
+        }
+        s.append(index+". "+commands[i]->getDesc()+"\n");
     }
+    this->dio.write(s);
+}
+int CLI::getMenuOption(){
     string input=this->dio.read();
-    int option=atoi(input.data());
-    this->commands[option-1]->execute();
+    int option;
+    try {
+        option = stoi(input);
+    }catch(std::invalid_argument e){
+        this->dio.write("invalid input");
+    }
+    if(option==8){
+        option=6;
+    }
+    return option-1;
+}
+void CLI::start(){
+    int menuOption=0;
+    while(menuOption!=5){
+        this->displayMenu();
+        menuOption=this->getMenuOption();
+        if(menuOption>5){
+            this->dio.write("invalid input");
+        }
+        this->commands[menuOption]->execute();
+    }
+
+
+}
+int CLI::getK(){
+    return this->k;
+}
+string CLI::getDistanceMetric(){
+return this->distanceMetric;;
+}
+void CLI::setK(int k){
+  this->k=k;
+}
+void CLI::setDistanceMetric(string distanceMetric){
+this->distanceMetric=distanceMetric;
+}
+bool CLI::isTestVectorsEmpty(){
+    return this->testVectors.empty();
+}
+void CLI::classifyTestVectors(){
+    for (auto &tVector: this->testVectors) {
+        string classification = this->cl.Classify(get<0>(tVector), this->k, this->distanceMetric);
+        get<1>(tVector) = classification;
+    }
+}
+string CLI::getTestClassifications(){
+    string s;
+    int i=1;
+    for(auto& tVector:this->testVectors) {
+           s.append(to_string(i++)+"\t"+get<1>(tVector)+"\n");
+        }
+    s.pop_back();
+    return s;
+}
+bool CLI::isTestVectorsClassified(){
+    for(auto& tVector:this->testVectors) {
+        if(get<1>(tVector).empty()){
+            return false;
+        }
+    }
+    return true;
+}
+bool CLI::isClassifierTrained(){
+    return this->cl.isTrained();
+}
+CLI::~CLI(){
+        reset();
+
+}
+void CLI::reset(){
+    delete (&testVectors);
+    for(auto obj : this->commands) {
+        delete obj;
+    }
+    delete(&commands);
+
 
 }

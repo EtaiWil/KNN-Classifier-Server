@@ -1,13 +1,14 @@
 #include "Classifier.h"
 // constructor. create new list and a new object to caluclate the knn algorithm. using abstraction.
-Classifier::Classifier() : classifiedVectors(*(new list<tuple<vector<double>, string>>)), calcs(getCalcs()) {}
+Classifier::Classifier() : classifiedVectors(*(new list<tuple<vector<double>, string>>)), calcs(getCalcs()) {
+}
 // insert every element to the list from the file
 void Classifier::getClassifiedVectors(istream &is)
 {
     string s;
-    while (getline(is, s))
+    while (getline(is, s)&&(!s.empty()))
     {
-        // getting all the line fromn the user.
+        // getting all the line from the user.
         std::vector<double> vec;
         // split the input into tokens every time in the line that "" is appering the token store the string before the "".
         std::string token;
@@ -36,8 +37,10 @@ void Classifier::getClassifiedVectors(istream &is)
 // distractor
 Classifier::~Classifier()
 {
-    reset();
+    this->reset();
+
 }
+
 
 // copy constructor
 Classifier::Classifier(const Classifier &other) : classifiedVectors(other.classifiedVectors), calcs(other.calcs)
@@ -93,11 +96,7 @@ bool Classifier::isValidDouble(string s)
 // clean everything we do in the heap.
 void Classifier::reset() noexcept
 {
-    map<string, CalculatorKnn *>::iterator it;
-    for (it = calcs.begin(); it != calcs.end(); it++)
-    {
-        delete (it->second);
-    }
+
     delete (&calcs);
     delete (&classifiedVectors);
 }
@@ -112,4 +111,7 @@ map<string, CalculatorKnn *> &Classifier::getCalcs()
     calcs["CAN"] = new KnnCalcCan(this->classifiedVectors);
     calcs["MIN"] = new KnnCalcMin(this->classifiedVectors);
     return calcs;
+}
+bool Classifier::isTrained(){
+    return !(this->classifiedVectors.empty());
 }

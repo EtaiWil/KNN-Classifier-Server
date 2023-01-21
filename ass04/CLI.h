@@ -13,16 +13,32 @@ class Command;
 class CLI {
 private:
 Classifier cl;
+int k;
+string distanceMetric;
 list<tuple<vector<double>, string>> &testVectors;
 vector<Command*>& commands;
 DefaultIO &dio;
-vector<Command*> &getCommands();
- bool isValidDouble(string s);
+vector<Command*> &getCommands(DefaultIO& dio);
+static bool isValidDouble(string s);
 public:
 CLI(DefaultIO &dio);
+~CLI();
+void reset();
+void displayMenu();
+int getMenuOption();
 void getTrainVectors(string s);
 void getTestVectors(string s);
 void start();
+int getK();
+string getDistanceMetric();
+void setK(int k);
+void setDistanceMetric(string distanceMetric);
+void classifyTestVectors();
+bool isTestVectorsEmpty();
+string getTestClassifications();
+bool isTestVectorsClassified();
+bool isClassifierTrained();
+
 
 
 };

@@ -13,9 +13,10 @@ string description;
 DefaultIO& dio;
 CLI& cli;
 public:
-    Command(CLI& cli,string desription,DefaultIO &dio);
+    Command(CLI& cli,string description,DefaultIO &dio);
     string getDesc();
     virtual void execute()=0;
+    ~Command()=default;
 
 };
 #endif
