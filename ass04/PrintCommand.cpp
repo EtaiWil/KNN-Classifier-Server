@@ -9,7 +9,6 @@ void PrintCommand::execute() {
         this->dio.write("please classify the data");
         return;
     }
-    this->dio.write(this->cli.getTestClassifications());
-    this->dio.write("Done.");
+    this->dio.write(this->cli.getTestClassifications()+"\ndone\n");
 
 }

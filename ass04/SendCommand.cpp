@@ -9,5 +9,5 @@ void SendCommand::execute() {
         this->dio.write("please classify the data");
         return;
     }
-    this->dio.write(this->cli.getTestClassifications());
+    this->dio.write(this->cli.getTestClassifications()+"ENDOFCLASSIFICATION");
 }

@@ -153,6 +153,107 @@ bool Client::isValidVector(std::vector<string> vec)
   }
   return true;
 }
+void uploadFiles(DefaultIO& dio){
+    string fileDir;
+    cin>>fileDir;
+    ifstream infile;
+    try
+    {
+        // open the file
+        infile.open(fileDir);
+        //if file is invalid (non existing or locked)
+        if(!infile.good())
+        {
+            infile.close();
+            cout<<"invalid input"<<endl;
+            //do it to give the server a message that ends in \n\n like we agreed
+            dio.write("ERRORABORT");
+        }
+    }
+    catch (exception e)
+    {
+        cout << "problem opening file" << endl;
+        //do it to give the server a message that ends in \n\n like we agreed
+        dio.write("\n\n");
+    }
+    // get the data from the file
+    string data,line;
+    while (getline(infile, line)&&(!line.empty())) {
+        data.append(line+"\n");
+    }
+    infile.close();
+    //end of data sign we agreed on.
+    data.append("\n\n");
+    dio.write(data);
+    data="";
+    string message= dio.read();
+    cout<<message<<endl;
+    cin>>fileDir;
+    try
+    {
+        // open the file
+        infile.open(fileDir);
+        //if file is invalid (non existing or locked)
+        if(!infile.good())
+        {
+            infile.close();
+            cout<<"invalid input"<<endl;
+            //do it to give the server a message that ends in \n\n like we agreed
+            dio.write("\n\n");
+        }
+    }
+    catch (exception e)
+    {
+        cout << "problem opening file" << endl;
+        //do it to give the server a message that ends in \n\n like we agreed
+        dio.write("ERRORABORT");
+    }
+    // get the data from the file
+    while (getline(infile, line)&&(!line.empty())) {
+        data.append(line+"\n");
+    }
+    infile.close();
+    //end of data sign we agreed on.
+    data.append("\n\n");
+    dio.write(data);
+    //message=dio.read();
+    //cout<<message<<endl;
+    return;
+
+}
+string getMenuInput(){
+    std::string input;
+    // getting all the line from the user.
+    cin>>input;
+    return input;
+
+}
+void algoSetting(DefaultIO& dio){
+    string settingStr;
+    std::getline(std::cin, settingStr);
+    if (settingStr.empty()) {
+        dio.write("NOCHANGE");
+        return;
+    }
+    dio.write(settingStr);
+    return;
+}
+void classify(){
+    //nothing to do there
+}
+void getClassification(DefaultIO& dio){
+
+}
+void getClassificationToFile(string data){
+    std::ofstream file("example.txt");
+    if (file.is_open()) {
+        file << data;
+        file.close();
+    } else {
+        std::cout << "Unable to open file";
+    }
+
+}
 
 int main(int argc, char *argv[]) {
     // first is the name of the program second is the ip and third is the ip
@@ -193,47 +294,60 @@ int main(int argc, char *argv[]) {
         // close the program
         return -1;
     }
-    while (true) {
-        char buffer[4096] = {0};
-        // maximum excpected message size from the server
-        int expected_data_len = sizeof(buffer);
-        // get message from the server using the recv function.
-        int read_bytes = recv(sock, buffer, expected_data_len, 0);
-        if (read_bytes == 0) // if the connection is closed.
-        {
-            // close the socket.
-            close(sock);
-            // close the program.
-            return 0;
-        } else if (read_bytes < 0) // if receiving the message fails
-        {
-            // print error message
-            perror("error recieving from server...");
-        // close the connection
-        close(sock);
-        // close the program
-        return -1;
-    }else
-        {
-            // print the message from the server.
-            cout << buffer << endl;
-        }
-        std::string input;
-        // getting all the line fromn the user.
-        std::getline(std::cin, input);
-        input.append("\n\n");
+    SocketIO sio(sock);
 
-        // length of the message
-        int data_len = input.size();
-        // send the given input to the user.
-        int sent_bytes = send(sock, input.data(), data_len, 0);
-        if (sent_bytes < 0) // if sending the message fails.
-        {
-            perror("error sending to server..");
-            // move to the next input from the user.
+    int option = 0;
+    bool readSkip=false;
+    while (option!=8) {
+        string message;
+        if(!readSkip) {
+            message = sio.read();
+            readSkip=false;
+        }
+            cout<<message;
+        cout.flush();
+        cin.clear();
+        string input=getMenuInput();
+        sio.write(input);
+        message=sio.read();
+        std::size_t loc = message.find("Welcome to the KNN Classifier Server.");
+        if(loc != std::string::npos) {
+            readSkip = true;
+        }
+        if(message == "invalid input"){
+            cout<<message<<endl;
             continue;
         }
-        // buffer for server messages.
+        option=stoi(input);
+        if(option!=5){
+            cout<<message<<endl;
+        }
+
+        switch (option) {
+            case 1:
+                uploadFiles(sio);
+                break;
+            case 2:
+                algoSetting(sio);
+                break;
+            case 3:
+                classify();
+                break;
+            case 4:
+                getClassification(sio);
+                break;
+            case 5:
+                string classifications;
+                std::size_t loc = message.find("ENDOFCLASSIFICATION");
+                if(loc != std::string::npos) {
+                     classifications= message.substr(0, loc);
+                }
+                std::thread t(getClassificationToFile,classifications);
+                    break;
+
+        }
+
+
 
     }
 

@@ -32,6 +32,14 @@ void CLI::getTestVectors(string s){
     string lineToken;
     while (getline(is, lineToken))
     {
+        std::size_t found = lineToken.find("\r");
+        if(found != std::string::npos) {
+            lineToken = lineToken.substr(0, found);
+        }
+        if(lineToken.empty()){
+            continue;
+        }
+
         // getting all the line from the user.
         std::vector<double> vec;
         // split the input into tokens every time in the line that "" is appering the token store the string before the "".
@@ -94,19 +102,23 @@ int CLI::getMenuOption(){
     try {
         option = stoi(input);
     }catch(std::invalid_argument e){
-        this->dio.write("invalid input");
+        return -1;
     }
-    if(option==8){
+    if(option == 6 || option ==7 || option > 8){
+        return -1;
+    }
+    else if(option==8){
         option=6;
     }
-    return option-1;
+    option--;
+    return option;
 }
 void CLI::start(){
     int menuOption=0;
     while(menuOption!=5){
         this->displayMenu();
         menuOption=this->getMenuOption();
-        if(menuOption>5){
+        if(menuOption == -1){ //invalid input from user;
             this->dio.write("invalid input");
         }
         this->commands[menuOption]->execute();
