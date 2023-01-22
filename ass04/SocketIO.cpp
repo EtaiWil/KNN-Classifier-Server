@@ -5,9 +5,16 @@ std::string SocketIO::read()
     char buffer[4096] = {0};                                          // create a buffer for the client
     int expected_data_len = sizeof(buffer);                           // the maximum length of data to recieve
     int read_bytes = recv(this->sock, buffer, expected_data_len, 0); // recieve a message from the clients socket into the buffer.
-    if (read_bytes <= 0)
+    if(read_bytes == 0){
+        perror("connection closed");
+        close(this->sock);
+        return "";
+    }
+    else if (read_bytes < 0)
     {
-      return "";
+        perror("connection error");
+        close(this->sock);
+        return "";
     }
     else
     {

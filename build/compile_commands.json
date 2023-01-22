@@ -1,47 +1,107 @@
 [
 {
-  "directory": "/mnt/c/Users/uziam/Code/advanced-programming-1/build",
-  "command": "/usr/bin/g++   -g -std=gnu++11 -o CMakeFiles/ass03.dir/server.cpp.o -c /mnt/c/Users/uziam/Code/advanced-programming-1/ass03/server.cpp",
-  "file": "/mnt/c/Users/uziam/Code/advanced-programming-1/ass03/server.cpp"
+  "directory": "C:/Users/uziam/Code/advanced-programming-1/build",
+  "command": "C:\\MinGW\\bin\\g++.exe   -g -std=gnu++11 -o CMakeFiles\\ass04.dir\\server.obj -c C:\\Users\\uziam\\Code\\advanced-programming-1\\ass04\\server.cpp",
+  "file": "C:/Users/uziam/Code/advanced-programming-1/ass04/server.cpp"
 },
 {
-  "directory": "/mnt/c/Users/uziam/Code/advanced-programming-1/build",
-  "command": "/usr/bin/g++   -g -std=gnu++11 -o CMakeFiles/ass03.dir/CalculatorKnn.cpp.o -c /mnt/c/Users/uziam/Code/advanced-programming-1/ass03/CalculatorKnn.cpp",
-  "file": "/mnt/c/Users/uziam/Code/advanced-programming-1/ass03/CalculatorKnn.cpp"
+  "directory": "C:/Users/uziam/Code/advanced-programming-1/build",
+  "command": "C:\\MinGW\\bin\\g++.exe   -g -std=gnu++11 -o CMakeFiles\\ass04.dir\\CLI.obj -c C:\\Users\\uziam\\Code\\advanced-programming-1\\ass04\\CLI.cpp",
+  "file": "C:/Users/uziam/Code/advanced-programming-1/ass04/CLI.cpp"
 },
 {
-  "directory": "/mnt/c/Users/uziam/Code/advanced-programming-1/build",
-  "command": "/usr/bin/g++   -g -std=gnu++11 -o CMakeFiles/ass03.dir/Classifier.cpp.o -c /mnt/c/Users/uziam/Code/advanced-programming-1/ass03/Classifier.cpp",
-  "file": "/mnt/c/Users/uziam/Code/advanced-programming-1/ass03/Classifier.cpp"
+  "directory": "C:/Users/uziam/Code/advanced-programming-1/build",
+  "command": "C:\\MinGW\\bin\\g++.exe   -g -std=gnu++11 -o CMakeFiles\\ass04.dir\\StandartIO.obj -c C:\\Users\\uziam\\Code\\advanced-programming-1\\ass04\\StandartIO.cpp",
+  "file": "C:/Users/uziam/Code/advanced-programming-1/ass04/StandartIO.cpp"
 },
 {
-  "directory": "/mnt/c/Users/uziam/Code/advanced-programming-1/build",
-  "command": "/usr/bin/g++   -g -std=gnu++11 -o CMakeFiles/ass03.dir/Distance.cpp.o -c /mnt/c/Users/uziam/Code/advanced-programming-1/ass03/Distance.cpp",
-  "file": "/mnt/c/Users/uziam/Code/advanced-programming-1/ass03/Distance.cpp"
+  "directory": "C:/Users/uziam/Code/advanced-programming-1/build",
+  "command": "C:\\MinGW\\bin\\g++.exe   -g -std=gnu++11 -o CMakeFiles\\ass04.dir\\CalculatorKnn.obj -c C:\\Users\\uziam\\Code\\advanced-programming-1\\ass04\\CalculatorKnn.cpp",
+  "file": "C:/Users/uziam/Code/advanced-programming-1/ass04/CalculatorKnn.cpp"
 },
 {
-  "directory": "/mnt/c/Users/uziam/Code/advanced-programming-1/build",
-  "command": "/usr/bin/g++   -g -std=gnu++11 -o CMakeFiles/ass03.dir/KnnCalcAuc.cpp.o -c /mnt/c/Users/uziam/Code/advanced-programming-1/ass03/KnnCalcAuc.cpp",
-  "file": "/mnt/c/Users/uziam/Code/advanced-programming-1/ass03/KnnCalcAuc.cpp"
+  "directory": "C:/Users/uziam/Code/advanced-programming-1/build",
+  "command": "C:\\MinGW\\bin\\g++.exe   -g -std=gnu++11 -o CMakeFiles\\ass04.dir\\Classifier.obj -c C:\\Users\\uziam\\Code\\advanced-programming-1\\ass04\\Classifier.cpp",
+  "file": "C:/Users/uziam/Code/advanced-programming-1/ass04/Classifier.cpp"
 },
 {
-  "directory": "/mnt/c/Users/uziam/Code/advanced-programming-1/build",
-  "command": "/usr/bin/g++   -g -std=gnu++11 -o CMakeFiles/ass03.dir/KnnCalcCan.cpp.o -c /mnt/c/Users/uziam/Code/advanced-programming-1/ass03/KnnCalcCan.cpp",
-  "file": "/mnt/c/Users/uziam/Code/advanced-programming-1/ass03/KnnCalcCan.cpp"
+  "directory": "C:/Users/uziam/Code/advanced-programming-1/build",
+  "command": "C:\\MinGW\\bin\\g++.exe   -g -std=gnu++11 -o CMakeFiles\\ass04.dir\\Distance.obj -c C:\\Users\\uziam\\Code\\advanced-programming-1\\ass04\\Distance.cpp",
+  "file": "C:/Users/uziam/Code/advanced-programming-1/ass04/Distance.cpp"
 },
 {
-  "directory": "/mnt/c/Users/uziam/Code/advanced-programming-1/build",
-  "command": "/usr/bin/g++   -g -std=gnu++11 -o CMakeFiles/ass03.dir/KnnCalcChb.cpp.o -c /mnt/c/Users/uziam/Code/advanced-programming-1/ass03/KnnCalcChb.cpp",
-  "file": "/mnt/c/Users/uziam/Code/advanced-programming-1/ass03/KnnCalcChb.cpp"
+  "directory": "C:/Users/uziam/Code/advanced-programming-1/build",
+  "command": "C:\\MinGW\\bin\\g++.exe   -g -std=gnu++11 -o CMakeFiles\\ass04.dir\\KnnCalcAuc.obj -c C:\\Users\\uziam\\Code\\advanced-programming-1\\ass04\\KnnCalcAuc.cpp",
+  "file": "C:/Users/uziam/Code/advanced-programming-1/ass04/KnnCalcAuc.cpp"
 },
 {
-  "directory": "/mnt/c/Users/uziam/Code/advanced-programming-1/build",
-  "command": "/usr/bin/g++   -g -std=gnu++11 -o CMakeFiles/ass03.dir/KnnCalcMan.cpp.o -c /mnt/c/Users/uziam/Code/advanced-programming-1/ass03/KnnCalcMan.cpp",
-  "file": "/mnt/c/Users/uziam/Code/advanced-programming-1/ass03/KnnCalcMan.cpp"
+  "directory": "C:/Users/uziam/Code/advanced-programming-1/build",
+  "command": "C:\\MinGW\\bin\\g++.exe   -g -std=gnu++11 -o CMakeFiles\\ass04.dir\\KnnCalcCan.obj -c C:\\Users\\uziam\\Code\\advanced-programming-1\\ass04\\KnnCalcCan.cpp",
+  "file": "C:/Users/uziam/Code/advanced-programming-1/ass04/KnnCalcCan.cpp"
 },
 {
-  "directory": "/mnt/c/Users/uziam/Code/advanced-programming-1/build",
-  "command": "/usr/bin/g++   -g -std=gnu++11 -o CMakeFiles/ass03.dir/KnnCalcMin.cpp.o -c /mnt/c/Users/uziam/Code/advanced-programming-1/ass03/KnnCalcMin.cpp",
-  "file": "/mnt/c/Users/uziam/Code/advanced-programming-1/ass03/KnnCalcMin.cpp"
+  "directory": "C:/Users/uziam/Code/advanced-programming-1/build",
+  "command": "C:\\MinGW\\bin\\g++.exe   -g -std=gnu++11 -o CMakeFiles\\ass04.dir\\KnnCalcChb.obj -c C:\\Users\\uziam\\Code\\advanced-programming-1\\ass04\\KnnCalcChb.cpp",
+  "file": "C:/Users/uziam/Code/advanced-programming-1/ass04/KnnCalcChb.cpp"
+},
+{
+  "directory": "C:/Users/uziam/Code/advanced-programming-1/build",
+  "command": "C:\\MinGW\\bin\\g++.exe   -g -std=gnu++11 -o CMakeFiles\\ass04.dir\\KnnCalcMan.obj -c C:\\Users\\uziam\\Code\\advanced-programming-1\\ass04\\KnnCalcMan.cpp",
+  "file": "C:/Users/uziam/Code/advanced-programming-1/ass04/KnnCalcMan.cpp"
+},
+{
+  "directory": "C:/Users/uziam/Code/advanced-programming-1/build",
+  "command": "C:\\MinGW\\bin\\g++.exe   -g -std=gnu++11 -o CMakeFiles\\ass04.dir\\KnnCalcMin.obj -c C:\\Users\\uziam\\Code\\advanced-programming-1\\ass04\\KnnCalcMin.cpp",
+  "file": "C:/Users/uziam/Code/advanced-programming-1/ass04/KnnCalcMin.cpp"
+},
+{
+  "directory": "C:/Users/uziam/Code/advanced-programming-1/build",
+  "command": "C:\\MinGW\\bin\\g++.exe   -g -std=gnu++11 -o CMakeFiles\\ass04.dir\\UploadCommand.obj -c C:\\Users\\uziam\\Code\\advanced-programming-1\\ass04\\UploadCommand.cpp",
+  "file": "C:/Users/uziam/Code/advanced-programming-1/ass04/UploadCommand.cpp"
+},
+{
+  "directory": "C:/Users/uziam/Code/advanced-programming-1/build",
+  "command": "C:\\MinGW\\bin\\g++.exe   -g -std=gnu++11 -o CMakeFiles\\ass04.dir\\Command.obj -c C:\\Users\\uziam\\Code\\advanced-programming-1\\ass04\\Command.cpp",
+  "file": "C:/Users/uziam/Code/advanced-programming-1/ass04/Command.cpp"
+},
+{
+  "directory": "C:/Users/uziam/Code/advanced-programming-1/build",
+  "command": "C:\\MinGW\\bin\\g++.exe   -g -std=gnu++11 -o CMakeFiles\\ass04.dir\\SettingCommand.obj -c C:\\Users\\uziam\\Code\\advanced-programming-1\\ass04\\SettingCommand.cpp",
+  "file": "C:/Users/uziam/Code/advanced-programming-1/ass04/SettingCommand.cpp"
+},
+{
+  "directory": "C:/Users/uziam/Code/advanced-programming-1/build",
+  "command": "C:\\MinGW\\bin\\g++.exe   -g -std=gnu++11 -o CMakeFiles\\ass04.dir\\ClassifyCommand.obj -c C:\\Users\\uziam\\Code\\advanced-programming-1\\ass04\\ClassifyCommand.cpp",
+  "file": "C:/Users/uziam/Code/advanced-programming-1/ass04/ClassifyCommand.cpp"
+},
+{
+  "directory": "C:/Users/uziam/Code/advanced-programming-1/build",
+  "command": "C:\\MinGW\\bin\\g++.exe   -g -std=gnu++11 -o CMakeFiles\\ass04.dir\\PrintCommand.obj -c C:\\Users\\uziam\\Code\\advanced-programming-1\\ass04\\PrintCommand.cpp",
+  "file": "C:/Users/uziam/Code/advanced-programming-1/ass04/PrintCommand.cpp"
+},
+{
+  "directory": "C:/Users/uziam/Code/advanced-programming-1/build",
+  "command": "C:\\MinGW\\bin\\g++.exe   -g -std=gnu++11 -o CMakeFiles\\ass04.dir\\SendCommand.obj -c C:\\Users\\uziam\\Code\\advanced-programming-1\\ass04\\SendCommand.cpp",
+  "file": "C:/Users/uziam/Code/advanced-programming-1/ass04/SendCommand.cpp"
+},
+{
+  "directory": "C:/Users/uziam/Code/advanced-programming-1/build",
+  "command": "C:\\MinGW\\bin\\g++.exe   -g -std=gnu++11 -o CMakeFiles\\ass04.dir\\ExitCommand.obj -c C:\\Users\\uziam\\Code\\advanced-programming-1\\ass04\\ExitCommand.cpp",
+  "file": "C:/Users/uziam/Code/advanced-programming-1/ass04/ExitCommand.cpp"
+},
+{
+  "directory": "C:/Users/uziam/Code/advanced-programming-1/build",
+  "command": "C:\\MinGW\\bin\\g++.exe   -g -std=gnu++11 -o CMakeFiles\\ass04.dir\\SocketIO.obj -c C:\\Users\\uziam\\Code\\advanced-programming-1\\ass04\\SocketIO.cpp",
+  "file": "C:/Users/uziam/Code/advanced-programming-1/ass04/SocketIO.cpp"
+},
+{
+  "directory": "C:/Users/uziam/Code/advanced-programming-1/build",
+  "command": "C:\\MinGW\\bin\\g++.exe   -g -std=gnu++11 -o CMakeFiles\\client.dir\\client.obj -c C:\\Users\\uziam\\Code\\advanced-programming-1\\ass04\\client.cpp",
+  "file": "C:/Users/uziam/Code/advanced-programming-1/ass04/client.cpp"
+},
+{
+  "directory": "C:/Users/uziam/Code/advanced-programming-1/build",
+  "command": "C:\\MinGW\\bin\\g++.exe   -g -std=gnu++11 -o CMakeFiles\\client.dir\\SocketIO.obj -c C:\\Users\\uziam\\Code\\advanced-programming-1\\ass04\\SocketIO.cpp",
+  "file": "C:/Users/uziam/Code/advanced-programming-1/ass04/SocketIO.cpp"
 }
 ]

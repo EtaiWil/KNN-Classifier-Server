@@ -15,6 +15,9 @@
 #include <sstream>
 #include <stdexcept>
 #include <algorithm>
+#include "SocketIO.h"
+#include "DefaultIO.h"
+#include <thread>
 using namespace std;
 class Client{
 public:

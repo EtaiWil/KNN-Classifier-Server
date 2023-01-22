@@ -3,9 +3,9 @@ SettingCommand::SettingCommand(CLI& cli,DefaultIO &dio):Command(cli,"algorithm s
 }
 //check what yoav answser to dekel about printng erors for the k and the metric.
 void SettingCommand::execute(){
-    dio.write("The current KNN parameters are: K = "+to_string(this->cli.getK())+", distance metric = "+this->cli.getDistanceMetric());
+    dio.write("The current KNN parameters are: K = "+to_string(this->cli.getK())+", distance metric = "+this->cli.getDistanceMetric()+"\n");
     string input = dio.read();
-    if(!input.empty()){
+    if(input!="NOCHANGE"){
         std::istringstream iss(input);
         std::string token;
         vector<string> tokens;
@@ -16,25 +16,25 @@ void SettingCommand::execute(){
         }
         //if nothing sent
         if(tokens.empty()){
-            this->dio.write("invalid value for K");
-            this->dio.write("invalid value for metric");
+            this->dio.write("invalid value for K\n");
+            this->dio.write("invalid value for metric\n");
             return;
         } else if(tokens.size()==1){
             if(isValidDistance(tokens[0])){
-                this->dio.write("invalid value for K");
+                this->dio.write("invalid value for K\n");
                 return;
             }
             int number;
             try {
                  number= std::stoi(input);
                 if(number<=0) {
-                    this->dio.write("invalid value for K");
-                    this->dio.write("invalid value for metric");
+                    this->dio.write("invalid value for K\n");
+                    this->dio.write("invalid value for metric\n");
                     return;
                 }
             } catch (std::invalid_argument) {
-                this->dio.write("invalid value for K");
-                this->dio.write("invalid value for metric");
+                this->dio.write("invalid value for K\n");
+                this->dio.write("invalid value for metric\n");
                 return;
             }
             } else if(tokens.size()==2){
@@ -42,12 +42,12 @@ void SettingCommand::execute(){
         bool metricFlag=true;
         int k = stoi(tokens[0]);
         if (k<=0){
-            this->dio.write("invalid value for K");
+            this->dio.write("invalid value for K\n");
             kFlag=false;
         }
 
         if(!isValidDistance(tokens[1])){
-            this->dio.write("invalid value for metric");
+            this->dio.write("invalid value for metric\n");
             metricFlag=false;
         }
         if(kFlag && metricFlag) {

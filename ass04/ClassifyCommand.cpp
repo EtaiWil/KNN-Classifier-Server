@@ -3,14 +3,14 @@ ClassifyCommand::ClassifyCommand(CLI& cli,DefaultIO &dio):Command(cli,"classify 
 }
 void ClassifyCommand::execute(){
     if(this->cli.isTestVectorsEmpty()||!(this->cli.isClassifierTrained())){
-        this->dio.write("please upload data");
+        this->dio.write("please upload data\n");
         return;
     }
     try{
     this->cli.classifyTestVectors();
     }catch (std::invalid_argument e){
-        this->dio.write("error classifying vectors");
+        this->dio.write("error classifying vectors\n");
         return;
 }
-    this->dio.write("classifying data complete");
+    this->dio.write("classifying data complete\n");
  }
