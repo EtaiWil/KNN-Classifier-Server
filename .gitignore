@@ -4,3 +4,4 @@ datasets
 *.exe
 *.out
 *.o
+ass04/CMakeLists.txt

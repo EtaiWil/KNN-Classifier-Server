@@ -6,13 +6,14 @@ std::string SocketIO::read()
     int expected_data_len = sizeof(buffer);                           // the maximum length of data to recieve
     int read_bytes = recv(this->sock, buffer, expected_data_len, 0); // recieve a message from the clients socket into the buffer.
     if(read_bytes == 0){
-        perror("connection closed");
+        //perror("connection closed");
         close(this->sock);
+        throw invalid_argument("Socket is disconnected");
         return "";
     }
     else if (read_bytes < 0)
     {
-        perror("connection error");
+        //perror("connection error");
         close(this->sock);
         return "";
     }

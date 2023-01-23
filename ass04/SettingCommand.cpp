@@ -3,7 +3,7 @@ SettingCommand::SettingCommand(CLI& cli,DefaultIO &dio):Command(cli,"algorithm s
 }
 //check what yoav answser to dekel about printng erors for the k and the metric.
 void SettingCommand::execute(){
-    dio.write("The current KNN parameters are: K = "+to_string(this->cli.getK())+", distance metric = "+this->cli.getDistanceMetric()+"\n");
+    dio.write("The current KNN parameters are: K = "+to_string(this->cli.getK())+", distance metric = "+this->cli.getDistanceMetric()+"ENDOFSETTING");
     string input = dio.read();
     if(input!="NOCHANGE"){
         std::istringstream iss(input);
@@ -53,6 +53,8 @@ void SettingCommand::execute(){
         if(kFlag && metricFlag) {
             this->cli.setK(k);
             this->cli.setDistanceMetric(tokens[1]);
+            dio.write("OKOK");
+
         }
         return;
 
@@ -61,6 +63,7 @@ void SettingCommand::execute(){
             return;
         }
     }
+    dio.write("OKOK");
 }
 
 bool SettingCommand::isValidDistance(std::string distance) {

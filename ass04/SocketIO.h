@@ -7,6 +7,7 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 #include <string>
+#include <stdexcept>
 
 class SocketIO: public DefaultIO {
 private:

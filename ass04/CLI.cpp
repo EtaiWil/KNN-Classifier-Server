@@ -94,10 +94,16 @@ void CLI::displayMenu(){
         }
         s.append(index+". "+commands[i]->getDesc()+"\n");
     }
+    s.pop_back();
     this->dio.write(s);
 }
 int CLI::getMenuOption(){
-    string input=this->dio.read();
+    string input;
+    try {
+        input = this->dio.read();
+    }catch (exception& e){
+        return -2;
+    }
     int option;
     try {
         option = stoi(input);
@@ -121,7 +127,15 @@ void CLI::start(){
         if(menuOption == -1){ //invalid input from user;
             this->dio.write("invalid input");
         }
-        this->commands[menuOption]->execute();
+        else if(menuOption==-2){
+            break;
+        }else {
+            try {
+                this->commands[menuOption]->execute();
+            }catch(exception& e){
+                break;
+            }
+        }
     }
 
 

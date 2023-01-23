@@ -1,4 +1,58 @@
 #include "client.h"
+Client::Client(DefaultIO& dio):dio(dio){
+    this->isMenuPrinted=false;
+}
+bool Client::isPrintMenu() {
+    return this->isMenuPrinted;
+}
+bool Client::checkMessageForMenu() {
+    std::size_t loc = this->message.find("Welcome to the KNN Classifier Server.");
+    if(loc!=std::string::npos){
+        return true;
+    }
+    return false;
+}
+string Client::getMessage() {
+    //if(this->message.empty()){
+    this->readMessage();
+    //}
+    this->isMenuPrinted=this->checkMessageForMenu();
+    string messageToReturn;
+    messageToReturn.append(this->message);
+    this->message.clear();
+    return messageToReturn;
+}
+//if(this->checkMessageForMenu()){
+  //  std::size_t loc = this->message.find("Welcome to the KNN Classifier Server.");
+    //string messageToReturn = this->message.substr(0,loc);
+    //this->message=this->message.substr(loc,this->message.size());
+    //return messageToReturn;
+
+//string messageToReturn = this->message;
+//this->message="";
+//return messageToReturn;
+//}
+void Client::readMessage(){
+    this->message=dio.read();
+}
+/*
+string Client::getMenu(){
+    if(this->message.empty()){
+        this->readMessage();
+    }
+    if(!this->checkMessageForMenu()){
+        this->readMessage();
+    }
+        std::size_t loc = this->message.find("Welcome to the KNN Classifier Server.");
+        string messageToReturn= this->message.substr(loc,this->message.size());
+        this->message=this->message.substr(0,loc);
+        return messageToReturn;
+
+}
+ */
+void Client::writeMessage(string s) {
+    this->dio.write(s);
+}
 
 bool Client::isValidIpAddress(char *ipAddress)
 { // use the inet_pton routine to check if the ip address is valid.
@@ -26,134 +80,8 @@ int Client::getPort(string port)
   }
   return portNum;
 }
-// check if the string is one of the valid distances.
-bool Client::isValidDistance(std::string distance)
-{
-  return distance == "MIN" || distance == "MAN" || distance == "CHB" || distance == "AUC" || distance == "CAN";
-}
-// check if the char is dot.
-bool Client::isDot(char c)
-{
-  if (c == '.')
-    return true;
-  else
-    return false;
-}
-// this function check if the input from the user is valid.
-bool Client::isValidDouble(std::string s)
-{
-  if (s.length() == 0)
-  {
-    return false;
-  }
-  // we want to get from the user only this characters "0123456789.-" as they represent Double number.
-  std::size_t found = s.find_first_not_of("0123456789.-Ee");
-  if (found != std::string::npos)
-  {
-    return false;
-  }
-  // if ther is more then one dot in a string it can not represent a vector so it is not valid.
-  size_t count = std::count_if(s.begin(), s.end(), isDot);
-  if (count > 1)
-  {
-    return false;
-  }
-  // if the last char in the string is dot its mean that the input is not valide example "1."
-
-  if (s.back() == '.')
-  {
-    return false;
-  }
-  return true;
-}
-// if the user enterd -1 we need to finish the program.
-std::vector<std::string> Client::getUserInput(string input)
-{
-  // if inserted -1 we need to finish the program.
-  if (input == "-1")
-  {
-    throw std::out_of_range("close the program");
-  }
-  std::vector<std::string> vec;
-  // split the input into tokens every time in the line that "" is appering the token store the string before the "".
-  std::string token;
-  // read the data into the stringstream
-  std::istringstream iss(input);
-  // split by any '' (space key)
-  while (std::getline(iss, token, ' '))
-  {
-
-    // insert the input into the vector.
-    vec.push_back(token);
-  }
-  // if the input is too small
-  if (vec.size() < 3)
-  {
-    throw std::invalid_argument("Not Enough Arguments");
-  }
-  return vec;
-}
-// check here if the input distance by the user is valid.
-std::string Client::getUserDistance(vector<std::string> input)
-{
-  if (!isValidDistance(input[input.size() - 2]))
-  {
-    throw std::invalid_argument("Invalid Distance argument");
-  }
-  return input[input.size() - 2];
-}
-// check if the k given by the user if valid.
-int Client::getUserK(vector<std::string> input)
-{
-  std::size_t found = input[input.size() - 1].find_first_not_of("0123456789");
-  if (found != std::string::npos)
-  {
-    throw std::invalid_argument("Invalid K argument");
-  }
-  int k = stoi(input[input.size() - 1]);
-  if (k <= 0)
-  {
-    throw std::invalid_argument("Invalid K argument");
-  }
-  return k;
-}
-// this function get the input from the user and then insert the valid input into vector.
-std::vector<double> Client::getUserVector()
-{
-  std::string input;
-  // getting all the line fromn the user.
-  std::getline(std::cin, input);
-  std::vector<double> vec;
-  // split the input into tokens every time in the line that "" is appering the token store the string before the "".
-  std::string token;
-  // read the data into the stringstream
-  std::istringstream iss(input);
-  // split by any '' (space key)
-  while (std::getline(iss, token, ' '))
-  {
-    // check if the input is valid
-    if (!isValidDouble(token))
-    {
-      throw std::invalid_argument("Invalid arguments for the Vector");
-    }
-    // insert the input into the vector.
-    vec.push_back(std::stod(token));
-  }
-  return vec;
-}
-// check the inputs to see if one contains invalid double.
-bool Client::isValidVector(std::vector<string> vec)
-{
-  for (int i = 0; i < vec.size() - 2; i++)
-  {
-    if (!isValidDouble(vec[i]))
-    {
-      return false;
-    }
-  }
-  return true;
-}
-void uploadFiles(DefaultIO& dio){
+// create a function that checks if the menu is in the message, and if so, it returns true;
+void Client::uploadFiles(){
     string fileDir;
     cin>>fileDir;
     ifstream infile;
@@ -167,14 +95,14 @@ void uploadFiles(DefaultIO& dio){
             infile.close();
             cout<<"invalid input"<<endl;
             //do it to give the server a message that ends in \n\n like we agreed
-            dio.write("ERRORABORT");
+            this->writeMessage("ERRORABORT");
         }
     }
     catch (exception e)
     {
         cout << "problem opening file" << endl;
         //do it to give the server a message that ends in \n\n like we agreed
-        dio.write("\n\n");
+        this->writeMessage("ERRORABORT");
     }
     // get the data from the file
     string data,line;
@@ -184,9 +112,9 @@ void uploadFiles(DefaultIO& dio){
     infile.close();
     //end of data sign we agreed on.
     data.append("\n\n");
-    dio.write(data);
+    this->writeMessage(data);
     data="";
-    string message= dio.read();
+    string message= this->getMessage();
     cout<<message<<endl;
     cin>>fileDir;
     try
@@ -199,14 +127,14 @@ void uploadFiles(DefaultIO& dio){
             infile.close();
             cout<<"invalid input"<<endl;
             //do it to give the server a message that ends in \n\n like we agreed
-            dio.write("\n\n");
+            this->writeMessage("ERRORABORT");
         }
     }
     catch (exception e)
     {
         cout << "problem opening file" << endl;
         //do it to give the server a message that ends in \n\n like we agreed
-        dio.write("ERRORABORT");
+        this->writeMessage("ERRORABORT");
     }
     // get the data from the file
     while (getline(infile, line)&&(!line.empty())) {
@@ -215,11 +143,11 @@ void uploadFiles(DefaultIO& dio){
     infile.close();
     //end of data sign we agreed on.
     data.append("\n\n");
-    dio.write(data);
+    this->writeMessage(data);
+    string messageTwo=this->getMessage();
+    cout<<messageTwo<<endl;
     //message=dio.read();
     //cout<<message<<endl;
-    return;
-
 }
 string getMenuInput(){
     std::string input;
@@ -228,32 +156,60 @@ string getMenuInput(){
     return input;
 
 }
-void algoSetting(DefaultIO& dio){
+void Client::algoSetting(string setting) {
+    cout << setting << endl;
     string settingStr;
-    std::getline(std::cin, settingStr);
-    if (settingStr.empty()) {
-        dio.write("NOCHANGE");
-        return;
+    //cin.clear();
+    /*fflush(stdin);
+    char c=0;
+    while(c!='\n') {
+        scanf("% c", &c);
+        settingStr.push_back(c);
+    }*/
+    cin.ignore(INT16_MAX, '\n');
+    std::getline(cin, settingStr);
+    if (settingStr.empty() || settingStr == "\n") {
+        this->writeMessage("NOCHANGE");
     }
-    dio.write(settingStr);
-    return;
+    this->writeMessage(settingStr);
+    string reply = this->getMessage();
+    if (reply != "OKOK") {
+        std::size_t loc = reply.find("OKOK");
+        if (loc != std::string::npos) {
+            reply = reply.substr(loc + 4, reply.size());
+        }
+        cout << reply;
+    }
 }
-void classify(){
-    //nothing to do there
+void Client::classify(){
+    if(!this->isPrintMenu()){
+        cout<<this->getMessage()<<endl;
+    }
 }
-void getClassification(DefaultIO& dio){
-
+void Client::getClassification(){
+    if(!this->isPrintMenu()){
+        cout<<this->getMessage()<<endl;
+    }
 }
 void getClassificationToFile(string data){
-    std::ofstream file("example.txt");
-    if (file.is_open()) {
-        file << data;
-        file.close();
-    } else {
-        std::cout << "Unable to open file";
+
+        try {
+            std::ofstream file("ClassifiedVectors.txt");
+            if (file.is_open()) {
+                file << data;
+                file.close();
+                return;
+            } else {
+                std::cout << "invalid input"<<endl;
+                return;
+            }
+        }
+        catch (const std::exception e) {
+            cout << "invalid input" << endl;
+        }
     }
 
-}
+
 
 int main(int argc, char *argv[]) {
     // first is the name of the program second is the ip and third is the ip
@@ -295,55 +251,95 @@ int main(int argc, char *argv[]) {
         return -1;
     }
     SocketIO sio(sock);
+    Client client(sio);
 
     int option = 0;
-    bool readSkip=false;
+    //bool readSkip=false;
     while (option!=8) {
-        string message;
-        if(!readSkip) {
-            message = sio.read();
-            readSkip=false;
+        if(!client.isPrintMenu()) {
+            string s = client.getMessage();
+            cout << s<<endl;
         }
-            cout<<message;
-        cout.flush();
-        cin.clear();
+        //cout.flush();
+        //cin.clear();
         string input=getMenuInput();
-        sio.write(input);
-        message=sio.read();
-        std::size_t loc = message.find("Welcome to the KNN Classifier Server.");
-        if(loc != std::string::npos) {
-            readSkip = true;
+        client.writeMessage(input);
+        string s;
+        try {
+            s = client.getMessage();
+        }catch(exception& e){
+            close(sock);
+            return 0;
         }
-        if(message == "invalid input"){
-            cout<<message<<endl;
+          if(input!="5"&&input!="2"&&input!="8"){
+            cout<<s<<endl;
+        }
+      //  std::size_t loc = message.find("Welcome to the KNN Classifier Server.");
+       // if(loc != std::string::npos) {
+        //    readSkip = true;
+       // }
+        if(s == "invalid input"){
+            cout<<s<<endl;
             continue;
         }
         option=stoi(input);
-        if(option!=5){
-            cout<<message<<endl;
-        }
 
         switch (option) {
             case 1:
-                uploadFiles(sio);
+                client.uploadFiles();
                 break;
-            case 2:
-                algoSetting(sio);
+            case 2: {
+                //string message=client.getMessage();
+                string setting;
+                std::size_t loc = s.find("ENDOFSETTING");
+                if (loc != std::string::npos) {
+                    setting = s.substr(0, loc);
+                    s = s.substr(loc + 12, s.size());
+                    client.algoSetting(setting);
+                    cout << s << endl;
+                }
+            }
                 break;
             case 3:
-                classify();
+                client.classify();
                 break;
             case 4:
-                getClassification(sio);
+                client.getClassification();
                 break;
-            case 5:
-                string classifications;
-                std::size_t loc = message.find("ENDOFCLASSIFICATION");
-                if(loc != std::string::npos) {
-                     classifications= message.substr(0, loc);
+            case 5: {
+                std::size_t loc = s.find("please upload data");
+                if (loc != std::string::npos) {
+                cout<<s<<endl;
+                continue;
                 }
-                std::thread t(getClassificationToFile,classifications);
-                    break;
+                loc = s.find("please classify the data");
+                if (loc != std::string::npos) {
+                cout<<s<<endl;
+                continue;
+                }
+                //string message=client.getMessage();
+                string classifications;
+                loc = s.find("ENDOFCLASSIFICATION");
+                if (loc != std::string::npos) {
+                    classifications = s.substr(0, loc);
+                    std::thread t(getClassificationToFile, classifications);
+                    t.detach();
+                    //s = s.substr(loc + 19, classifications.size());
+                    s = s.substr(loc + 19, s.size());
+                    cout<<s<<endl;
+                }
+
+            }
+                break;
+
+            case 8:
+                close(sock);
+                return 0;
+                break;
+            default:
+                close(sock);
+                return -1;
+                break;
 
         }
 
