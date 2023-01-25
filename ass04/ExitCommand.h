@@ -5,6 +5,7 @@
 using namespace std;
 class ExitCommand : public Command {
 public:
+//constractor.
     ExitCommand(CLI& cli,DefaultIO &dio);
     virtual void execute();
     ~ExitCommand()=default;

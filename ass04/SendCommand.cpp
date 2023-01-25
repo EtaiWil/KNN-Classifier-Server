@@ -1,5 +1,6 @@
 #include "SendCommand.h"
 SendCommand::SendCommand(CLI& cli,DefaultIO &dio):Command(cli,"download results",dio){}
+//sending the classifcation of the data to the user.
 void SendCommand::execute() {
     if(!(this->cli.isClassifierTrained())||this->cli.isTestVectorsEmpty()){
         this->dio.write("please upload data\n");

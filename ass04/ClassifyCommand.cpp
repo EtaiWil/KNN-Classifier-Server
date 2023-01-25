@@ -6,6 +6,7 @@ void ClassifyCommand::execute(){
         this->dio.write("please upload data\n");
         return;
     }
+    //check if there is an eror in the proccess of classifing the vectors.
     try{
     this->cli.classifyTestVectors();
     }catch (std::invalid_argument e){

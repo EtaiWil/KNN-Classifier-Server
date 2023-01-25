@@ -1,7 +1,7 @@
 #include "SettingCommand.h"
 SettingCommand::SettingCommand(CLI& cli,DefaultIO &dio):Command(cli,"algorithm settings",dio){
 }
-//check what yoav answser to dekel about printng erors for the k and the metric.
+//changing the K and the distance metric if needed, also checking if the input is valid.
 void SettingCommand::execute(){
     dio.write("The current KNN parameters are: K = "+to_string(this->cli.getK())+", distance metric = "+this->cli.getDistanceMetric()+"ENDOFSETTING");
     string input = dio.read();
@@ -65,7 +65,7 @@ void SettingCommand::execute(){
     }
     dio.write("OKOK");
 }
-
+//check if the distance is valid.
 bool SettingCommand::isValidDistance(std::string distance) {
     return distance == "MIN" || distance == "MAN" || distance == "CHB" || distance == "AUC" || distance == "CAN";
 }

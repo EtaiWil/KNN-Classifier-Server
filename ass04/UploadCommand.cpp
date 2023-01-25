@@ -2,6 +2,7 @@
 
  UploadCommand::UploadCommand(CLI& cli,DefaultIO &dio):Command(cli,"upload an unclassified csv data file",dio){
 }
+//getting from the user the csv files and check if ther  is any problem with them.
  void UploadCommand::execute(){
     dio.write("Please upload your local train CSV file.");
     string input,data;
