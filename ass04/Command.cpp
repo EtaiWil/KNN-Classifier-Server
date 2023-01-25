@@ -1,8 +1,9 @@
 #include "Command.h"
 
-
-Command::Command(CLI &cli ,string description,DefaultIO& dio):cli(cli),description(description),dio(dio){
+Command::Command(CLI &cli, string description, DefaultIO &dio) : cli(cli), description(description), dio(dio)
+{
 }
-string Command::getDesc(){
+string Command::getDesc()
+{
     return this->description;
 }

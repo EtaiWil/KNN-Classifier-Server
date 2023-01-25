@@ -3,12 +3,12 @@
 #include "CLI.h"
 #include "Command.h"
 using namespace std;
-class ExitCommand : public Command {
+class ExitCommand : public Command
+{
 public:
-//constractor.
-    ExitCommand(CLI& cli,DefaultIO &dio);
+    // constractor.
+    ExitCommand(CLI &cli, DefaultIO &dio);
     virtual void execute();
-    ~ExitCommand()=default;
-
+    ~ExitCommand() = default;
 };
 #endif

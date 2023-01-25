@@ -19,9 +19,10 @@
 #include "Classifier.h"
 #include <thread>
 using namespace std;
-class Server{
+class Server
+{
 public:
-//this function gets a string and if it contains a valid port number it returns it as int, otherwise it returns -1.
-static int getPort(string port);
+    // this function gets a string and if it contains a valid port number it returns it as int, otherwise it returns -1.
+    static int getPort(string port);
 };
 #endif

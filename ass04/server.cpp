@@ -17,10 +17,17 @@ int Server::getPort(string port)
     }
     return portNum;
 }
-void handleClient(int sock){
+/// @brief handle a client from start to end
+/// @param sock an open socket to the client
+void handleClient(int sock)
+{
+    // create a socketIO object
     SocketIO sio(sock);
+    // create a CLI object
     CLI cli(sio);
+    // call the start method to handle the client
     cli.start();
+    // afther done close the socket and finish.
     close(sock);
 }
 int main(int argc, char *argv[])
@@ -35,11 +42,11 @@ int main(int argc, char *argv[])
     }
     // stote the prot number in Server_port  if the number is -1 its not valid otherwise valid.
     const int Server_port = Server::getPort(string(argv[1]));
-    //if the getPort returns -1 the port argument is invalid.
-        if (Server_port < 0)
+    // if the getPort returns -1 the port argument is invalid.
+    if (Server_port < 0)
     {
         cout << "invalid input" << endl;
-        //close the program (unable to run with given port)
+        // close the program (unable to run with given port)
         return -1;
     }
     // socket creation,SOCK_STREAM is a const for TCP
@@ -48,7 +55,7 @@ int main(int argc, char *argv[])
     if (sock < 0)
     {
         perror("error creating socket");
-        //close the program (unable to create the socket)
+        // close the program (unable to create the socket)
         return -1;
     }
     struct sockaddr_in sin;            // struct for address
@@ -76,9 +83,10 @@ int main(int argc, char *argv[])
         { // check if the creation of socket for client failed
             perror("error accepting client");
         }
+        // create a thread for handling this client
         std::thread t(handleClient, client_sock);
+        // detach thread from main thread.
         t.detach();
-
     }
     // close the main socket that listens
     close(sock);

@@ -1,11 +1,11 @@
 #include "Distance.h"
 
 // check if the vectors have the same dimenstion
- bool Distance::isSameDimension(const std::vector<double> &v1, const std::vector<double> &v2)
+bool Distance::isSameDimension(const std::vector<double> &v1, const std::vector<double> &v2)
 {
   return v1.size() == v2.size();
 }
-//check if the result of any algorithm is int.
+// check if the result of any algorithm is int.
 int Distance::isInt(double result)
 {
   if (result == (int)result)
@@ -14,9 +14,11 @@ int Distance::isInt(double result)
   }
   return 0;
 }
-//if the result of any algorithm is int type we ant to add .0 to the answer.
-std::string Distance::addPointZero(double x){
-  if(Distance::isInt(x)){
+// if the result of any algorithm is int type we ant to add .0 to the answer.
+std::string Distance::addPointZero(double x)
+{
+  if (Distance::isInt(x))
+  {
     return ".0";
   }
   return "";
@@ -27,7 +29,7 @@ double Distance::euclideanDistance(const std::vector<double> &v1, const std::vec
   return minkowskiDistance(v1, v2, 2);
 }
 // manhattanDistance algorithm number 2
-//using minkowskiDistance function to compute manhhtan distance by defining the p to one.
+// using minkowskiDistance function to compute manhhtan distance by defining the p to one.
 double Distance::manhattanDistance(const std::vector<double> &v1, const std::vector<double> &v2)
 {
 
@@ -66,15 +68,16 @@ double Distance::canberra_distance(const std::vector<double> &v1, const std::vec
     throw std::invalid_argument("The Dimensions of the vectors are not the same");
   }
   double sum = 0;
-  for(int i=0;i<v1.size();i++) {
-    double mona = fabs(v2[i]-v1[i]);
-    double denominator=fabs(v2[i])+fabs(v1[i]);
-    if(denominator==0){
+  for (int i = 0; i < v1.size(); i++)
+  {
+    double mona = fabs(v2[i] - v1[i]);
+    double denominator = fabs(v2[i]) + fabs(v1[i]);
+    if (denominator == 0)
+    {
       continue;
     }
-    
-    sum += (mona/denominator);
 
+    sum += (mona / denominator);
   }
   return sum;
 }

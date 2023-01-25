@@ -20,30 +20,41 @@
 #include <thread>
 #include <stdio.h>
 using namespace std;
-class Client{
+class Client
+{
 private:
     DefaultIO &dio;
     string message;
+    // flag to know if the menu was printed
     bool isMenuPrinted;
+    // check if the menu is a part of the message to set the flag.
     bool checkMessageForMenu();
 
 public:
-
-Client(DefaultIO& dio);
-string getMessage();
-//string getMenu();
-bool isPrintMenu();
-void readMessage();
-void writeMessage(string s);
-void uploadFiles();
-void algoSetting(string setting);
-void classify();
-void getClassification();
-//this function check if the ip is valid.
-static bool isValidIpAddress(char *ipAddress);
-//this function gets a string and if it contains a valid port number it returns it as int, otherwise it returns -1.
-static int getPort(string port);
+    // constructor
+    Client(DefaultIO &dio);
+    // get a message from the server
+    string getMessage();
+    // check if the menu was already printed
+    bool isPrintMenu();
+    // read a message from the given DefaultIO
+    void readMessage();
+    // write a message using the DefaultIO
+    void writeMessage(string s);
+    // upload vector files to server
+    void uploadFiles();
+    // view and set the algorithm settings
+    void algoSetting(string setting);
+    // request the server to classify the data
+    void classify();
+    // get the classifications from the server to the screen
+    void getClassification();
+    // get the classifications into a file.
+    static void getClassificationToFile(string data,ofstream &&file);
+        // this function check if the ip is valid.
+        static bool isValidIpAddress(char *ipAddress);
+    // this function gets a string and if it contains a valid port number it returns it as int, otherwise it returns -1.
+    static int getPort(string port);
 };
-
 
 #endif

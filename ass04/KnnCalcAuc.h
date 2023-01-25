@@ -7,17 +7,19 @@
 #include <tuple>
 #include <vector>
 
-class KnnCalcAuc : public CalculatorKnn {
-    private:
-    //implemets the virtual method to calculate distance 
-    virtual double calculateDistance(const vector<double>& firstVector,const vector<double>& secondVector) const;
-    public:
-    //constructor
-    KnnCalcAuc(list<tuple<vector<double>,string>>& classifiedVectors);
-    KnnCalcAuc (const KnnCalcAuc& other); //copy constructor
-    KnnCalcAuc& operator= (const KnnCalcAuc& other); //copy assignment operator
-    KnnCalcAuc (KnnCalcAuc&& other) noexcept=default; //move constructor
-    KnnCalcAuc& operator= (KnnCalcAuc&& other) noexcept; //move assignment operator
-    ~KnnCalcAuc()=default; //destructor
+class KnnCalcAuc : public CalculatorKnn
+{
+private:
+    // implemets the virtual method to calculate distance
+    virtual double calculateDistance(const vector<double> &firstVector, const vector<double> &secondVector) const;
+
+public:
+    // constructor
+    KnnCalcAuc(list<tuple<vector<double>, string>> &classifiedVectors);
+    KnnCalcAuc(const KnnCalcAuc &other);                // copy constructor
+    KnnCalcAuc &operator=(const KnnCalcAuc &other);     // copy assignment operator
+    KnnCalcAuc(KnnCalcAuc &&other) noexcept = default;  // move constructor
+    KnnCalcAuc &operator=(KnnCalcAuc &&other) noexcept; // move assignment operator
+    ~KnnCalcAuc() = default;                            // destructor
 };
 #endif

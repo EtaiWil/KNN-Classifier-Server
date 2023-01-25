@@ -14,7 +14,9 @@ private:
     int sock;
 public:
     SocketIO(int sock);
+    //read a message from the socket
     virtual std::string read();
+    // sending a message using the socket
     virtual void write(std::string s);
 
 };

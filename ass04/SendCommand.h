@@ -4,12 +4,12 @@
 #include "CLI.h"
 #include "Command.h"
 using namespace std;
-//the is for the 5th method in the switch case.
-class SendCommand : public Command {
+// the is for the 5th method in the switch case.
+class SendCommand : public Command
+{
 public:
-    SendCommand(CLI& cli,DefaultIO &dio);
+    SendCommand(CLI &cli, DefaultIO &dio);
     virtual void execute();
-    ~SendCommand()=default;
-
+    ~SendCommand() = default;
 };
 #endif
