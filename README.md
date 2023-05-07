@@ -14,10 +14,10 @@ The system supports a number of commands, including classify for performing the 
 In the server we Created a CLI class that manages all the data from the server, it gets a DefaultIO object which is an abstract class, and it uses it to communicate, this way we created a SocketIO class that implements it and that way we communicated with a Tcp socket. in the beggining we used the terminal to pass the messages so we also implemented a StandartIO class that uses the terminal to get the data.
 The CLI also has a Classfier object member, at first it need to train his classifier with data he gets from the IO, and afterwards he can use this trained classifier to classify his test vectors (which he also got from the user).
 We used the Command Design Pattern to create and control all the commands. each Command Object has a description and an excecute method (each command has a different one).
-<img src="https://user-images.githubusercontent.com/93612510/214552651-51cafca3-c932-42ad-9b83-68d46c8252f6.png" height=400>
+<img src="https://user-images.githubusercontent.com/93612510/214552651-51cafca3-c932-42ad-9b83-68d46c8252f6.png" height=200 width=200>
 
 The CLI object has a list of all of his Commands and in each time he writes his menu to the IO he prints all of his Commands description and this way he gets an input from the IO and calls the matching Command excecute method.
-<img src="https://user-images.githubusercontent.com/93612510/214552710-43d1289f-99c8-423f-907d-a5e86e623628.png" height=400>
+<img src="https://user-images.githubusercontent.com/93612510/214552710-43d1289f-99c8-423f-907d-a5e86e623628.png" height=200 width=200>
 For Each client That creates a TCP Connection in the server a new Thread opens with the handleClient method that gets the clients socket as an argument, and in this thread a new CLI object is created and handles the Client.
 By doing so we can support up to 5 clients at a a time because the client handling is happening on a different thread, and the main thread returns to accept a new connection from other clients.
 
