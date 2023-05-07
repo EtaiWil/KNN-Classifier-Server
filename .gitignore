@@ -1,2 +1,9 @@
 .vscode
 main.o
+*.exe
+*.out
+*.o
+details.txt
+build
+logs
+CMakeLists.txt
