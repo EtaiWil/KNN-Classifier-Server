@@ -4,7 +4,7 @@ This project is a KNN (K-Nearest Neighbors) classifier implemented as a server a
 K-nearest neighbors (KNN) is a supervised machine learning algorithm that can be used for classification or regression. In the case of classification, the algorithm finds the K data points in the training dataset that are closest to the new data point, and then assigns the new data point to the class that those K data points belong to.
 Transmission Control Protocol (TCP) is a standard that defines how to establish and maintain a network conversation by which applications can exchange data.
 TCP is a connection-oriented protocol, which means a connection is established and maintained until the applications at each end have finished exchanging messages.
-## how we implemented:
+## How we implemented:
 The KNN server and client system is implemented using TCP sockets with multi-client support using threads. The server listens on a specified port for incoming connections from clients, and spawns a new thread for each connected client. The clients can then send commands to the server, which are dispatched to the appropriate handlers.
 
 The system is structured using a number of classes, each responsible for a specific aspect of the implementation. The Classifier class performs the KNN classification on the input vectors, using a specified K and distance function. The Server class handles incoming client connections and dispatches commands to the appropriate handlers. The Client class communicates with the server over TCP sockets, sending commands and receiving responses.
@@ -24,7 +24,7 @@ The CLI object has a list of all of his Commands and in each time he writes his 
 For Each client That creates a TCP Connection in the server a new Thread opens with the handleClient method that gets the clients socket as an argument, and in this thread a new CLI object is created and handles the Client.
 By doing so we can support up to 5 clients at a a time because the client handling is happening on a different thread, and the main thread returns to accept a new connection from other clients.
 
-## run example
+## Run example
 in this example we loaded a dataset that contains iris flower types and its test vectors , reconfigured the KNN algorithm settings to K=7 and distance metric to by Manhattan Distance. than we classified the test vectors and printed the classifications, at the end we downloaded the classifications.
 ![image](https://user-images.githubusercontent.com/93612510/214554064-bbb94b1d-2126-40a0-9cfa-9d14ce864591.png)
 ![image](https://user-images.githubusercontent.com/93612510/214554159-0c6343cd-0e02-4e3c-9ccf-eab00e3a78df.png)
