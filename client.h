@@ -18,32 +18,46 @@
 #include "SocketIO.h"
 #include "DefaultIO.h"
 #include <thread>
+<<<<<<< HEAD:client.h
+=======
+#include <stdio.h>
+>>>>>>> 3763a6365ec2e7018a0f082843e782021879fb4b:ass04/client.h
 using namespace std;
-class Client{
+class Client
+{
+private:
+    DefaultIO &dio;
+    string message;
+    // flag to know if the menu was printed
+    bool isMenuPrinted;
+    // check if the menu is a part of the message to set the flag.
+    bool checkMessageForMenu();
+
 public:
-//this function check if the ip is valid.
-static bool isValidIpAddress(char *ipAddress);
-//this function gets a string and if it contains a valid port number it returns it as int, otherwise it returns -1.
-static int getPort(string port);
-//this function checks if the given distance metric is valid
-static bool isValidDistance(std::string distance);
-//this function checks if the given char is a dot, if so returns true,otherwise returns false.
-static bool isDot(char c);
-//this function checks if the given string contatins a valid double.
-static bool isValidDouble(std::string s);
-//this function gets an input from the user and stores it in a vector of strings (divides by spaces.)
-static std::vector<std::string> getUserInput(string input);
-//this function gets the vector we got from getUserInput function and gets the distance metric out of it.
-//if the distance metric is invalid, it throws an exception.
-static std::string getUserDistance(vector<std::string> input);
-//this funciton check if the k that given by the user is valid.
-static int getUserK(vector<std::string> input);
- // this function converting the input from string to double and store the values in vector.
-static std::vector<double> getUserVector();
-//this function runs the is valid double on every string in the vector. if one is not valid it returns false.
-static bool isValidVector(std::vector<string> vec);
-
+    // constructor
+    Client(DefaultIO &dio);
+    // get a message from the server
+    string getMessage();
+    // check if the menu was already printed
+    bool isPrintMenu();
+    // read a message from the given DefaultIO
+    void readMessage();
+    // write a message using the DefaultIO
+    void writeMessage(string s);
+    // upload vector files to server
+    void uploadFiles();
+    // view and set the algorithm settings
+    void algoSetting(string setting);
+    // request the server to classify the data
+    void classify();
+    // get the classifications from the server to the screen
+    void getClassification();
+    // get the classifications into a file.
+    static void getClassificationToFile(string data,ofstream &&file);
+        // this function check if the ip is valid.
+        static bool isValidIpAddress(char *ipAddress);
+    // this function gets a string and if it contains a valid port number it returns it as int, otherwise it returns -1.
+    static int getPort(string port);
 };
-
 
 #endif

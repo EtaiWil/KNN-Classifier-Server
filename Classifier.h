@@ -39,6 +39,6 @@ public:
     void getClassifiedVectors(istream &is);
     // this function calcualte the distance based on input from the user create new knn based on the string
     string Classify(const vector<double> &Vector, int k, string distanceType);
-    bool isTrained(); //returns true if it has vectors in his classifiedVectors list, and false otherwise.
+    bool isTrained(); // returns true if it has vectors in his classifiedVectors list, and false otherwise.
 };
 #endif

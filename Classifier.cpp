@@ -1,12 +1,13 @@
 #include "Classifier.h"
 // constructor. create new list and a new object to caluclate the knn algorithm. using abstraction.
-Classifier::Classifier() : classifiedVectors(*(new list<tuple<vector<double>, string>>)), calcs(getCalcs()) {
+Classifier::Classifier() : classifiedVectors(*(new list<tuple<vector<double>, string>>)), calcs(getCalcs())
+{
 }
 // insert every element to the list from the file
 void Classifier::getClassifiedVectors(istream &is)
 {
     string s;
-    while (getline(is, s)&&(!s.empty()))
+    while (getline(is, s) && (!s.empty()))
     {
         // getting all the line from the user.
         std::vector<double> vec;
@@ -38,9 +39,7 @@ void Classifier::getClassifiedVectors(istream &is)
 Classifier::~Classifier()
 {
     this->reset();
-
 }
-
 
 // copy constructor
 Classifier::Classifier(const Classifier &other) : classifiedVectors(other.classifiedVectors), calcs(other.calcs)
@@ -112,6 +111,8 @@ map<string, CalculatorKnn *> &Classifier::getCalcs()
     calcs["MIN"] = new KnnCalcMin(this->classifiedVectors);
     return calcs;
 }
-bool Classifier::isTrained(){
+// check if there are any vectors in the classified Vectors list
+bool Classifier::isTrained()
+{
     return !(this->classifiedVectors.empty());
 }
