@@ -1,14 +1,9 @@
 .vscode
 main.o
-datasets
 *.exe
 *.out
 *.o
-<<<<<<< HEAD
 details.txt
 build
 logs
 CMakeLists.txt
-=======
-ass04/CMakeLists.txt
->>>>>>> 3763a6365ec2e7018a0f082843e782021879fb4b
