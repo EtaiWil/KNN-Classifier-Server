@@ -1,6 +1,0 @@
-project(ass04)
-set(CMAKE_CXX_STANDARD 11)
-add_executable(ass04  server.cpp CLI.cpp StandartIO.cpp CalculatorKnn.cpp Classifier.cpp Distance.cpp KnnCalcAuc.cpp KnnCalcCan.cpp KnnCalcChb.cpp KnnCalcMan.cpp KnnCalcMin.cpp UploadCommand.cpp Command.cpp SettingCommand.h SettingCommand.cpp ClassifyCommand.h ClassifyCommand.cpp PrintCommand.cpp PrintCommand.h SendCommand.cpp SendCommand.h ExitCommand.cpp ExitCommand.h SocketIO.cpp SocketIO.h)
-add_executable(client client.cpp SocketIO.cpp SocketIO.h)
-find_package(Threads REQUIRED)
-target_link_libraries(client PRIVATE Threads::Threads)

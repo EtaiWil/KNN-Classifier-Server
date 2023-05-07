@@ -4,3 +4,7 @@ datasets
 *.exe
 *.out
 *.o
+details.txt
+build
+logs
+CMakeLists.txt
